@@ -1,8 +1,28 @@
 aid: mattermark
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/mattermark.png
 name: Mattermark
-description: Mattermark is a company surfaced as a portfolio company of a16z, slow-ventures, version-one-ventures
-  and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the
-  enrichment pipeline.
+description: >-
+  Mattermark is a business-intelligence platform for data-driven deal making,
+  providing profiles on roughly four million companies and twenty million key
+  contacts along with their investors, funding events, and news. Relaunched as
+  an independent company, Mattermark exposes its dataset through a REST API
+  (api.mattermark.com) and a GraphQL API (eapi.mattermark.com), both
+  authenticated with a Bearer API key and queryable with the Mattermark Search
+  Filter Language (MSFL). Originally an a16z / Slow Ventures / Version One
+  Ventures-backed startup, it is tracked in the API Evangelist network as a
+  company profile.
 url: https://raw.githubusercontent.com/api-evangelist/mattermark/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -10,14 +30,42 @@ x-backed-by:
 - a16z
 - slow-ventures
 - version-one-ventures
-x-tier: stub
+x-tier: profiled
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
 tags:
 - Company
-apis: []
+- Business Intelligence
+- Company Data
+- Investors
+- Funding
+- Sales Intelligence
+- Market Research
+apis:
+- name: Mattermark REST API
+  description: >-
+    RESTful access to Mattermark company, investor, funding-event, news and
+    personnel data, with page-based pagination and MSFL query endpoints.
+  humanURL: https://developer.mattermark.com/reference
+  baseURL: https://api.mattermark.com/
+  properties:
+  - type: Documentation
+    url: https://developer.mattermark.com/docs
+  - type: APIReference
+    url: https://developer.mattermark.com/reference
+  - type: Authentication
+    url: authentication/mattermark-authentication.yml
+- name: Mattermark GraphQL API
+  description: >-
+    GraphQL access to the Mattermark dataset using the Mattermark Search Filter
+    Language (MSFL) for complex company and investor queries.
+  humanURL: https://developer.mattermark.com/graphql
+  baseURL: https://eapi.mattermark.com/
+  properties:
+  - type: Documentation
+    url: https://developer.mattermark.com/graphql
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -26,3 +74,50 @@ maintainers:
 common:
 - type: Website
   url: https://mattermark.com
+- type: DeveloperPortal
+  url: https://developer.mattermark.com/
+- type: Documentation
+  url: https://developer.mattermark.com/docs
+- type: APIReference
+  url: https://developer.mattermark.com/reference
+- type: GettingStarted
+  url: https://developer.mattermark.com/docs
+- type: Pricing
+  url: https://mattermark.com/pricing
+- type: TermsOfService
+  url: https://mattermark.com/terms
+- type: PrivacyPolicy
+  url: https://mattermark.com/privacy
+- type: Blog
+  url: https://mattermark.com/blog
+- type: GitHubOrganization
+  url: https://github.com/mattermark
+- type: LLMsTxt
+  url: llms/mattermark-llms.txt
+- type: Authentication
+  url: authentication/mattermark-authentication.yml
+- type: Conventions
+  url: conventions/mattermark-conventions.yml
+- type: ErrorCatalog
+  url: errors/mattermark-problem-types.yml
+- type: RateLimits
+  url: rate-limits/mattermark-rate-limits.yml
+- type: Lifecycle
+  url: lifecycle/mattermark-lifecycle.yml
+- type: ChangeLog
+  url: changelog/mattermark-changelog.yml
+- type: MCPServer
+  url: mcp/mattermark-mcp.yml
+- type: Packages
+  url: packages/mattermark-packages.yml
+- type: Conformance
+  url: conformance/mattermark-conformance.yml
+- type: DataModel
+  url: data-model/mattermark-data-model.yml
+- type: DomainSecurity
+  url: security/mattermark-domain-security.yml
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 13
+  pass: local-v1
