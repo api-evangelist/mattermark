@@ -1,0 +1,19 @@
+generated: '2026-07-20'
+method: searched
+source: live probes of https://mattermark.com/.well-known/*
+host: https://mattermark.com
+documents:
+- path: /.well-known/security.txt
+  status: 404
+- path: /.well-known/openid-configuration
+  status: 404
+- path: /.well-known/oauth-authorization-server
+  status: 404
+- path: /.well-known/api-catalog
+  status: 404
+- path: /.well-known/ai-plugin.json
+  status: 404
+note: >-
+  No /.well-known/ discovery documents are published on mattermark.com. The API
+  developer hub (developer.mattermark.com) publishes an llms.txt instead
+  (see llms/mattermark-llms.txt).

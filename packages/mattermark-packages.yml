@@ -1,0 +1,34 @@
+generated: '2026-07-20'
+method: searched
+source: npm, PyPI, RubyGems registry search for "mattermark"
+note: >-
+  Mattermark publishes no first-party SDKs. The libraries below are
+  community/third-party wrappers of the Mattermark API (official: false).
+packages:
+- language: javascript
+  registry: npm
+  name: mattermark
+  url: https://www.npmjs.com/package/mattermark
+  install: npm install mattermark
+  official: false
+  author: Chris Dzoba
+  repository: https://github.com/dzoba/mattermark
+  description: A node module that wraps the Mattermark API.
+- language: python
+  registry: pypi
+  name: mattermark
+  url: https://pypi.org/project/mattermark/
+  install: pip install mattermark
+  official: false
+  author: Carl Cortright
+  repository: https://github.com/FoundryGroup/Mattermark
+  description: Wrapper for the Mattermark API.
+- language: ruby
+  registry: rubygems
+  name: mattermark
+  url: https://rubygems.org/gems/mattermark
+  install: gem install mattermark
+  official: false
+  author: Andrew Thorp
+  repository: https://github.com/andrewpthorp/mattermark
+  description: Ruby client for the Mattermark API.

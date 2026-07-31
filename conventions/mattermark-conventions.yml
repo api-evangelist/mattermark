@@ -1,0 +1,68 @@
+generated: '2026-07-20'
+method: searched
+source: https://developer.mattermark.com/docs
+docs: https://developer.mattermark.com/docs
+summary: >-
+  Cross-cutting request/response conventions for the Mattermark REST API
+  (https://api.mattermark.com/) and GraphQL API (https://eapi.mattermark.com/),
+  captured from the developer documentation. Mattermark exposes company,
+  investor and funding data with page-based pagination, quota-header rate-limit
+  signaling, and a Mattermark Search Filter Language (MSFL) query dialect shared
+  by both the REST query endpoints and the GraphQL API.
+authentication:
+  style: bearer-api-key
+  header: Authorization
+  format: 'Bearer <api key>'
+  ref: authentication/mattermark-authentication.yml
+pagination:
+  style: page-number
+  params:
+  - name: page
+    default: 1
+    description: 1-indexed page of results to retrieve.
+  - name: per_page
+    default: 10
+    description: Number of records returned per page.
+  response_envelope: meta
+  response_fields:
+  - meta.total_record_count
+  - meta.total_pages
+  - meta.current_page
+  - meta.per_page
+  source: https://developer.mattermark.com/docs/rest-limits-paging
+rate_limit_signaling:
+  headers:
+  - X-Quota-Limit
+  - X-Quota-Remaining
+  - X-Quota-Reset
+  usage_endpoint: https://api.mattermark.com/ratelimit/usage
+  usage_endpoint_free: true
+  exceeded_status: 429
+  ref: rate-limits/mattermark-rate-limits.yml
+  source: https://developer.mattermark.com/docs/rest-quotas-usage
+error_envelope:
+  format: non-standard
+  problem_json: false
+  description: >-
+    HTTP status codes carry the outcome (200/400/403/404/429/500/503); the docs
+    do not publish an RFC 9457 problem+json envelope.
+  ref: errors/mattermark-problem-types.yml
+  source: https://developer.mattermark.com/docs/rest-responses-errors
+query_language:
+  name: MSFL
+  full_name: Mattermark Search Filter Language
+  description: >-
+    JSON filter dialect used by the REST query endpoints (e.g. POST
+    /query/investors) and the GraphQL API to express complex company/investor
+    searches.
+versioning:
+  scheme: dual-api
+  apis:
+  - kind: REST
+    base_url: https://api.mattermark.com/
+  - kind: GraphQL
+    base_url: https://eapi.mattermark.com/
+  ref: lifecycle/mattermark-lifecycle.yml
+idempotency:
+  supported: false
+  note: The documentation does not define an idempotency-key contract.

@@ -1,0 +1,29 @@
+generated: '2026-07-20'
+method: searched
+source: https://developer.mattermark.com/docs
+docs: https://developer.mattermark.com/docs
+versioning:
+  scheme: dual-api
+  apis:
+  - kind: REST
+    base_url: https://api.mattermark.com/
+    docs: https://developer.mattermark.com/reference
+  - kind: GraphQL
+    base_url: https://eapi.mattermark.com/
+    docs: https://developer.mattermark.com/graphql
+  note: >-
+    No dated API version identifier is published; REST and GraphQL are offered
+    as parallel surfaces over the same dataset.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No public deprecation/sunset policy (RFC 8594) was found.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+status_page_note: No public status page was found for mattermark.com.
+changelog:
+  ref: changelog/mattermark-changelog.yml
+  url: https://developer.mattermark.com/changelog
+deprecated_operations: []

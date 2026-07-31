@@ -1,0 +1,28 @@
+generated: '2026-07-20'
+method: searched
+source: https://developer.mattermark.com/docs/rest-requests-authentication
+docs: https://developer.mattermark.com/docs
+summary:
+  types: [http]
+  http_schemes: [bearer]
+  api_key_in: []
+  oauth2_flows: []
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: >-
+    Mattermark authenticates REST (https://api.mattermark.com/) and GraphQL
+    (https://eapi.mattermark.com/) requests with an API key passed as an HTTP
+    Bearer token in the Authorization header: "Authorization: Bearer <your api
+    key>". Keys are issued from the API Settings section of a Mattermark
+    account. There is no OAuth 2.0 / OpenID Connect surface and no scope model.
+  header: Authorization
+  format: 'Bearer <api key>'
+  key_provisioning: Mattermark account -> API Settings
+  applies_to:
+  - https://api.mattermark.com/
+  - https://eapi.mattermark.com/
+notes:
+- No published OpenAPI/Swagger security scheme document was available (docs are
+  hosted on a ReadMe hub); this profile was searched from the developer docs.

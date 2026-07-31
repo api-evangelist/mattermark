@@ -1,0 +1,21 @@
+generated: '2026-07-20'
+method: searched
+source: https://developer.mattermark.com/changelog
+docs: https://developer.mattermark.com/changelog
+scheme: dated-entries
+current_version: null
+note: >-
+  The public developer-hub changelog carries a single published entry (the
+  original API launch announcement). The recently re-launched Mattermark
+  retained the original ReadMe developer hub; no newer dated entries were
+  published at capture time.
+entries:
+- title: Welcome to Mattermark API
+  date: null
+  approx: ~2016 (shown as "almost 9 years ago" as of 2026-07)
+  author: Jonathan Kressaty
+  type: announcement
+  breaking: false
+  url: https://developer.mattermark.com/changelog/welcome-to-mattermark-api
+  highlights:
+  - Initial publication of the Mattermark developer hub and API documentation.

@@ -1,0 +1,9 @@
+# Mattermark API Documentation
+
+> The Mattermark API allows you to easily access information on over four million companies and their investors, funding events, news, and more.
+
+## Guides
+- [Documentation](https://developer.mattermark.com/docs.md): Mattermark API documentation
+
+## Changelog
+- [Welcome to Mattermark API](https://developer.mattermark.com/changelog/welcome-to-mattermark-api.md)

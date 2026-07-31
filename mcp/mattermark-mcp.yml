@@ -1,0 +1,47 @@
+generated: '2026-07-20'
+method: derived
+status: candidate
+source: >-
+  Derived from the documented REST endpoints at
+  https://developer.mattermark.com/reference. No official/hosted Mattermark MCP
+  server was found.
+server:
+  name: mattermark
+  transport: http
+  base_url: https://api.mattermark.com/
+  auth: 'Authorization: Bearer <api key>'
+  url: null
+tools:
+- name: search
+  description: Search for companies or investors.
+  source_operation: 'GET /search'
+- name: list_companies
+  description: Retrieve a list of companies (supports MSFL filtering + paging).
+  source_operation: 'GET /companies'
+- name: get_company
+  description: Retrieve a specific company profile.
+  source_operation: 'GET /companies/{id}'
+- name: list_company_stories
+  description: Retrieve news articles for a company.
+  source_operation: 'GET /companies/{id}/stories'
+- name: list_similar_companies
+  description: Retrieve companies similar to a given company.
+  source_operation: 'GET /companies/{id}/similar'
+- name: list_company_personnel
+  description: Retrieve employees / key contacts for a company.
+  source_operation: 'GET /companies/{id}/personnel'
+- name: list_funding_events
+  description: Retrieve a list of funding events.
+  source_operation: 'GET /funding-events'
+- name: get_investor
+  description: Retrieve a specific investor.
+  source_operation: 'GET /investors/{id}'
+- name: get_investor_portfolio
+  description: Retrieve an investor's portfolio companies.
+  source_operation: 'GET /investors/{id}/portfolio'
+- name: query_investors
+  description: Perform a complex investor query with MSFL.
+  source_operation: 'POST /query/investors'
+- name: get_quota
+  description: Check remaining API quota (does not consume quota).
+  source_operation: 'GET /quota'

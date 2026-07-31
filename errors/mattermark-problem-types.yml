@@ -1,0 +1,38 @@
+generated: '2026-07-20'
+method: searched
+source: https://developer.mattermark.com/docs/rest-responses-errors
+docs: https://developer.mattermark.com/docs/rest-responses-errors
+format: http-status
+problem_json: false
+envelope_note: >-
+  Mattermark signals outcomes with HTTP status codes; the documentation does
+  not publish an RFC 9457 application/problem+json body shape.
+problems:
+- status: 200
+  title: OK
+  meaning: Everything worked great.
+- status: 400
+  title: Bad Request
+  meaning: Your request was not properly sent.
+  remediation: Check request parameters, MSFL query body, and content type.
+- status: 403
+  title: Unauthorized
+  meaning: >-
+    Your API key is wrong, is no longer valid, or you do not have access to the
+    given resource.
+  remediation: Verify the Authorization Bearer API key and account entitlements.
+- status: 404
+  title: Not Found
+  meaning: The specified endpoint could not be found.
+- status: 429
+  title: Rate Limit Exceeded
+  meaning: You have temporarily exceeded your rate limit.
+  remediation: >-
+    Back off until X-Quota-Reset; check https://api.mattermark.com/ratelimit/usage
+    (does not consume quota).
+- status: 500
+  title: Internal Server Error
+  meaning: We had a problem with our server. Try again later.
+- status: 503
+  title: Service Unavailable
+  meaning: We're temporarily offline for maintenance. Please try again later.

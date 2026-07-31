@@ -1,0 +1,33 @@
+generated: '2026-07-20'
+method: derived
+source: >-
+  developer.mattermark.com docs (auth, paging, quotas, errors) + registry/DNS
+  probes; no OpenAPI available to assert spec-level conformance.
+standards:
+- id: oauth2
+  conforms: false
+  evidence: Auth is a static Bearer API key; no OAuth 2.0 authorization/token flow.
+- id: openid-connect
+  conforms: false
+  evidence: No /.well-known/openid-configuration (404).
+- id: bearer-token-auth
+  conforms: true
+  evidence: 'Authorization: Bearer <api key> documented for REST and GraphQL.'
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: Errors are HTTP status codes; no application/problem+json envelope documented.
+- id: graphql
+  conforms: true
+  evidence: GraphQL API published at https://eapi.mattermark.com/ with MSFL queries.
+- id: rest
+  conforms: true
+  evidence: RESTful resource endpoints published at https://api.mattermark.com/.
+- id: pagination
+  conforms: true
+  evidence: Page-number pagination (page/per_page) with meta paging fields.
+- id: rate-limit-signaling
+  conforms: true
+  evidence: X-Quota-Limit / X-Quota-Remaining / X-Quota-Reset headers + 429.
+compliance_program:
+  published: false
+  note: No trust center or named certifications (SOC 2 / ISO 27001 / etc.) found.

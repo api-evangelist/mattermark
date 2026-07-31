@@ -1,0 +1,60 @@
+generated: '2026-07-20'
+method: derived
+source: https://developer.mattermark.com/reference
+note: >-
+  Entity graph derived from the documented REST resource paths (no OpenAPI
+  schema was available). Relationships reflect the URL structure and documented
+  resources, not a published component schema.
+entities:
+- name: company
+  description: A company profile (of ~4M) with 80+ fields.
+  endpoints:
+  - GET /companies
+  - GET /companies/{id}
+- name: story
+  description: A news article / story attached to a company.
+  endpoints:
+  - GET /companies/{id}/stories
+- name: person
+  description: An employee / key contact at a company.
+  endpoints:
+  - GET /companies/{id}/personnel
+- name: investor
+  description: An investor (firm or individual).
+  endpoints:
+  - GET /investors/{id}
+  - POST /query/investors
+- name: funding_event
+  description: A funding round / event.
+  endpoints:
+  - GET /funding-events
+relationships:
+- from: company
+  to: story
+  kind: has_many
+  via: /companies/{id}/stories
+- from: company
+  to: person
+  kind: has_many
+  via: /companies/{id}/personnel
+- from: company
+  to: company
+  kind: has_many
+  via: /companies/{id}/similar
+  label: similar_companies
+- from: company
+  to: funding_event
+  kind: has_many
+  via: funding-events (by company)
+- from: investor
+  to: company
+  kind: has_many
+  via: /investors/{id}/portfolio
+- from: funding_event
+  to: company
+  kind: belongs_to
+  via: company reference
+- from: funding_event
+  to: investor
+  kind: has_many
+  via: investors participating in the round

@@ -1,0 +1,32 @@
+generated: '2026-07-20'
+method: searched
+source: https://developer.mattermark.com/docs/rest-quotas-usage
+docs: https://developer.mattermark.com/docs/rest-quotas-usage
+model: quota-per-period
+description: >-
+  Mattermark enforces per-account request quotas. Each response carries quota
+  headers, and a free usage endpoint reports current standing. Exceeding the
+  quota returns HTTP 429. The absolute limit_count is account/plan dependent and
+  is not published in the public docs.
+headers:
+- name: X-Quota-Limit
+  description: Your current request limit.
+- name: X-Quota-Remaining
+  description: Number of remaining requests in the current period.
+- name: X-Quota-Reset
+  description: Unix timestamp (seconds, UTC) of the start of the next quota period.
+usage_endpoint:
+  url: https://api.mattermark.com/ratelimit/usage
+  consumes_quota: false
+exceeded:
+  status: 429
+  title: Rate Limit Exceeded
+rate_limits:
+- name: account-quota
+  scope: per-api-key
+  window: quota-period
+  limit_count: null
+  signal_headers:
+  - X-Quota-Limit
+  - X-Quota-Remaining
+  - X-Quota-Reset
