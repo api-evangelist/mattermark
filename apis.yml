@@ -34,7 +34,7 @@ x-tier: profiled
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-20'
+modified: '2026-08-14'
 tags:
 - Company
 - Business Intelligence
@@ -51,27 +51,55 @@ apis:
   humanURL: https://developer.mattermark.com/reference
   baseURL: https://api.mattermark.com/
   properties:
+  - type: OpenAPI
+    url: openapi/mattermark-rest-api-openapi.yml
   - type: Documentation
     url: https://developer.mattermark.com/docs
+  - type: Documentation
+    name: Mattermark REST API docs (docs.mattermark.com)
+    url: https://docs.mattermark.com/rest_api/index.html
   - type: APIReference
     url: https://developer.mattermark.com/reference
+  - type: SourceCode
+    name: First-party OpenAPI/Swagger repository
+    url: https://github.com/Mattermark/mattermark-openapi
   - type: Authentication
     url: authentication/mattermark-authentication.yml
+  - type: Overlay
+    url: overlays/mattermark-rest-api-overlay.yaml
+  - type: Conventions
+    url: conventions/mattermark-conventions.yml
+  - type: ErrorCatalog
+    url: errors/mattermark-problem-types.yml
+  - type: DataModel
+    url: data-model/mattermark-data-model.yml
 - name: Mattermark GraphQL API
   description: >-
     GraphQL access to the Mattermark dataset using the Mattermark Search Filter
-    Language (MSFL) for complex company and investor queries.
+    Language (MSFL) for complex company and investor queries. Read-only: the
+    published schema declares 57 types under a single RootQuery and no mutation
+    type. Organizations model both companies and investors, discriminated by
+    companyPersona / investorPersona.
   humanURL: https://developer.mattermark.com/graphql
   baseURL: https://eapi.mattermark.com/
   properties:
+  - type: GraphQL
+    url: graphql/mattermark.graphql
   - type: Documentation
     url: https://developer.mattermark.com/graphql
+  - type: Documentation
+    name: Mattermark GraphQL API docs (docs.mattermark.com)
+    url: https://docs.mattermark.com/graphql_api/index.html
+  - type: Authentication
+    url: authentication/mattermark-authentication.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: AgenticAccess
+  url: agentic-access/mattermark-agentic-access.yml
 - type: Website
   url: https://mattermark.com
 - type: DeveloperPortal
@@ -87,7 +115,7 @@ common:
 - type: TermsOfService
   url: https://mattermark.com/terms
 - type: PrivacyPolicy
-  url: https://mattermark.com/privacy
+  url: https://mattermark.com/privacy-policy/
 - type: Blog
   url: https://mattermark.com/blog
 - type: GitHubOrganization
@@ -108,6 +136,8 @@ common:
   url: changelog/mattermark-changelog.yml
 - type: MCPServer
   url: mcp/mattermark-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/mattermark-tool-crosswalk.yml
 - type: Packages
   url: packages/mattermark-packages.yml
 - type: Conformance
@@ -116,8 +146,20 @@ common:
   url: data-model/mattermark-data-model.yml
 - type: DomainSecurity
   url: security/mattermark-domain-security.yml
+- type: OpenAPI
+  url: openapi/mattermark-rest-api-openapi.yml
+- type: GraphQL
+  url: graphql/mattermark.graphql
+- type: Overlay
+  url: overlays/mattermark-rest-api-overlay.yaml
+- type: Sandbox
+  url: sandbox/mattermark-sandbox.yml
+- type: Plans
+  url: plans/mattermark-plans-pricing.yml
+- type: AgentSkill
+  url: skills/_index.yml
 x-enrichment:
-  date: '2026-07-20'
+  date: '2026-08-14'
   status: enriched
   artifacts_added: 13
   pass: local-v1
