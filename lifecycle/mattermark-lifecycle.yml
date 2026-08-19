@@ -1,29 +1,107 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: searched
-source: https://developer.mattermark.com/docs
-docs: https://developer.mattermark.com/docs
+source: https://docs.mattermark.com/rest_api/index.html
+docs:
+- https://docs.mattermark.com/
+- https://developer.mattermark.com/docs
+summary: >-
+  Mattermark publishes no versioning policy, no deprecation policy, no SLA and
+  no status page. It maintains two parallel, mutually inconsistent developer
+  documentation sites, and at probe time neither API host completes a TLS
+  handshake — the documented surfaces are not callable.
 versioning:
-  scheme: dual-api
+  scheme: none
+  in_path: false
+  in_header: false
+  current: null
   apis:
   - kind: REST
     base_url: https://api.mattermark.com/
-    docs: https://developer.mattermark.com/reference
+    spec: openapi/mattermark-rest-api-openapi.yml
+    spec_version: 1.0.0
+    docs: https://docs.mattermark.com/rest_api/index.html
   - kind: GraphQL
     base_url: https://eapi.mattermark.com/
-    docs: https://developer.mattermark.com/graphql
+    schema: graphql/mattermark.graphql
+    docs: https://docs.mattermark.com/graphql_api/index.html
   note: >-
-    No dated API version identifier is published; REST and GraphQL are offered
-    as parallel surfaces over the same dataset.
+    No dated or numbered API version identifier is published on either surface;
+    resources sit at the host root. The Swagger document's info.version (1.0.0)
+    versions the document, not the API.
 deprecation:
   policy_url: null
   sunset_header: false
-  note: No public deprecation/sunset policy (RFC 8594) was found.
+  rfc8594: false
+  note: No public deprecation or sunset policy was found on either documentation site.
+  deprecated_surface_elements:
+  - element: 'GraphQL RootQuery.contactDetails'
+    evidence: 'Schema field description begins "Request contact information (email) for a name, organization pair. Dep..." (truncated "Deprecated" marker) in graphql/mattermark-schema.json.'
+  beta_surface_elements:
+  - element: 'POST /queries (Complex Queries)'
+    evidence: 'Documented under the heading "Complex Queries (BETA)" at https://docs.mattermark.com/rest_api/queries/index.html.'
 sla:
   url: null
   uptime_target: null
-status_page: null
-status_page_note: No public status page was found for mattermark.com.
+  published: false
+status_page:
+  url: null
+  published: false
+  probed:
+  - {url: 'https://status.mattermark.com', status: 000, note: does not resolve to a reachable service}
+  - {url: 'https://mattermark.com/status', status: 404}
+  note: >-
+    No status page exists. No StatusPage pointer is emitted in apis.yml.
 changelog:
   ref: changelog/mattermark-changelog.yml
   url: https://developer.mattermark.com/changelog
+documentation_surfaces:
+- host: https://docs.mattermark.com
+  generator: MkDocs (Material theme)
+  hosting: CloudFront
+  status: 200
+  copyright: "© Mattermark 2017"
+  covers: [REST API, GraphQL API, MSFL, quickstart guides]
+  publishes_machine_readable: 'yes — graphql_api/schema.json (introspection result) and graphql_api/introspection.gql'
+- host: https://developer.mattermark.com
+  generator: ReadMe
+  status: 200
+  covers: [REST reference, changelog, llms.txt]
+  publishes_machine_readable: 'no — no OpenAPI is downloadable from this hub'
+- host: https://github.com/Mattermark/mattermark-openapi
+  kind: specification repository
+  last_pushed: '2018-05-24'
+  publishes_machine_readable: 'yes — Swagger 2.0, 11 operations'
+documentation_divergence:
+  finding: >-
+    The two documentation sites disagree about the API. The older MkDocs site
+    and the Swagger definition agree on GET /companies/{id}/people and
+    GET /fundings; documentation prose elsewhere in the network had recorded
+    /companies/{id}/personnel and /funding-events. The specification in the
+    company's own GitHub org is treated as authoritative here.
+  risk: >-
+    A consumer landing on developer.mattermark.com never learns that a
+    machine-readable contract exists; it is published only on GitHub and on the
+    older docs host.
+availability:
+  checked: '2026-08-14'
+  api_hosts_reachable: false
+  evidence:
+  - {host: 'api.mattermark.com', dns: '154.3.62.35 (the marketing site IP)', http: '301 to https', https: 'TLS alert 112 unrecognized_name — no certificate served for this SNI'}
+  - {host: 'eapi.mattermark.com', dns: '154.3.62.35 (the marketing site IP)', http: '301 to https', https: 'TLS alert 112 unrecognized_name — no certificate served for this SNI'}
+  - {host: 'eapi-sandbox.mattermark.com', dns: 'dangling CNAME to prod-eapi-sandbox.us-east-1.elasticbeanstalk.com (no A record)', https: unreachable}
+  - {host: 'api-sandbox.mattermark.com', dns: 'dangling CNAME to prod-dwapi-sandbox.us-east-1.elasticbeanstalk.com (no A record)', https: unreachable}
+  finding: >-
+    Both production API hostnames now point at the WordPress marketing site's IP
+    address, which serves no certificate matching those names, so every HTTPS
+    request fails at the handshake. Both sandbox hostnames are dangling CNAMEs
+    to deleted AWS Elastic Beanstalk environments. The documentation, the
+    pricing page, the specification and the developer hub all remain published
+    and unchanged, so the API reads as live to a human but is not callable by
+    any client.
+  operational_risk: >-
+    The two dangling Elastic Beanstalk CNAMEs are a standing subdomain-takeover
+    exposure: anyone who can create an environment with those names in
+    us-east-1 would serve content from a mattermark.com subdomain that the
+    provider's own documentation instructs developers to send API keys to.
+  classification: documented-but-not-callable
 deprecated_operations: []

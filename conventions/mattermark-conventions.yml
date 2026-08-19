@@ -1,68 +1,127 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: searched
-source: https://developer.mattermark.com/docs
-docs: https://developer.mattermark.com/docs
+source: https://docs.mattermark.com/rest_api/getting_started/index.html
+docs:
+- https://docs.mattermark.com/rest_api/getting_started/index.html
+- https://docs.mattermark.com/graphql_api/index.html
+- https://developer.mattermark.com/docs
+spec_source: openapi/mattermark-rest-api-openapi.yml
 summary: >-
-  Cross-cutting request/response conventions for the Mattermark REST API
+  Cross-cutting request/response semantics for the Mattermark REST API
   (https://api.mattermark.com/) and GraphQL API (https://eapi.mattermark.com/),
-  captured from the developer documentation. Mattermark exposes company,
-  investor and funding data with page-based pagination, quota-header rate-limit
-  signaling, and a Mattermark Search Filter Language (MSFL) query dialect shared
-  by both the REST query endpoints and the GraphQL API.
+  captured from the published documentation and confirmed against the
+  first-party Swagger 2.0 definition. Mattermark is a read-oriented data API:
+  ten of its eleven REST operations are GET, the GraphQL schema declares no
+  mutation type, and the only write-shaped operation (POST /queries) creates a
+  saved query rather than mutating a record.
 authentication:
-  style: bearer-api-key
+  style: static-api-key
+  accepted_in: [header, query]
   header: Authorization
-  format: 'Bearer <api key>'
+  header_format: 'Bearer <api key>'
+  query_param: key
   ref: authentication/mattermark-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  evidence: >-
+    No idempotency key header or parameter appears in the published Swagger
+    definition or anywhere in the documentation. The API is read-dominant (10 of
+    11 operations are GET and therefore idempotent by HTTP semantics), and the
+    single POST (/queries) publishes no de-duplication contract.
+  note: >-
+    No Idempotency pointer is emitted in apis.yml — the provider has no
+    idempotency contract to point at.
 pagination:
   style: page-number
+  applies_to: REST
   params:
-  - name: page
-    default: 1
-    description: 1-indexed page of results to retrieve.
-  - name: per_page
-    default: 10
-    description: Number of records returned per page.
+  - {name: page, default: 1, description: 1-indexed page of results to retrieve.}
+  - {name: per_page, default: 10, documented_max: 50, description: Number of records returned per request.}
   response_envelope: meta
   response_fields:
   - meta.total_record_count
   - meta.total_pages
   - meta.current_page
   - meta.per_page
-  source: https://developer.mattermark.com/docs/rest-limits-paging
+  spec_definition: Metadata
+  source: https://docs.mattermark.com/rest_api/getting_started/index.html
+  caveat: >-
+    Trial accounts cannot page at all and see at most 50 results; paging unlocks
+    only on full API access.
+graphql_pagination:
+  style: relay-connection
+  types: [OrganizationSummaryConnection, OrganizationSummaryEdge, FundingRoundSummaryConnection, FundingRoundSummaryEdge, PageInfo]
+  source: graphql/mattermark-schema.json
+  caps:
+  - {query: 'organizations(ids:, domains:)', max: 5, unit: organizations}
+  - {query: fundingRoundSummaryQuery, max: 50, unit: rounds per call}
+query_language:
+  name: Mattermark Search Filter Language (MSFL)
+  used_by:
+  - 'POST /queries (REST, documented BETA)'
+  - 'organizationSummaryQuery(msfl:) (GraphQL)'
+  docs: https://docs.mattermark.com/graphql_api/msfl/index.html
+  note: >-
+    MSFL is the shared filter dialect across both surfaces. Simple REST
+    segmentation is also available as flat query-string parameters on
+    GET /companies (company_name, domain, business_models, industries,
+    keywords, stage, location).
+field_expansion:
+  supported: false
+  note: >-
+    REST returns fixed representations per endpoint; there is no expand or
+    sparse-fieldset parameter. GraphQL provides field selection natively, which
+    is the documented reason the GraphQL surface exists.
+metadata:
+  user_defined_fields: false
+  note: No customer-defined metadata is stored on any resource.
+request_tracing:
+  request_id_header: null
+  supported: false
+  note: No correlation or request-id header is documented or declared in the spec.
+versioning:
+  scheme: none
+  in_path: false
+  in_header: false
+  current: null
+  note: >-
+    Neither surface carries a version segment: the base URLs are
+    https://api.mattermark.com/ and https://eapi.mattermark.com/ with resources
+    at the root. The Swagger document declares info.version 1.0.0, which is the
+    document's version, not a negotiable API version. See
+    lifecycle/mattermark-lifecycle.yml.
+error_envelope:
+  format: http-status
+  problem_json: false
+  body_shape: unspecified
+  ref: errors/mattermark-problem-types.yml
+  note: >-
+    Outcomes are signalled by HTTP status code. No RFC 9457 application/
+    problem+json envelope, and no documented error body schema.
 rate_limit_signaling:
-  headers:
-  - X-Quota-Limit
-  - X-Quota-Remaining
-  - X-Quota-Reset
+  headers: [X-Quota-Limit, X-Quota-Remaining, X-Quota-Reset]
+  standard_family: false
+  retry_after: false
   usage_endpoint: https://api.mattermark.com/ratelimit/usage
   usage_endpoint_free: true
   exceeded_status: 429
   ref: rate-limits/mattermark-rate-limits.yml
-  source: https://developer.mattermark.com/docs/rest-quotas-usage
-error_envelope:
-  format: non-standard
-  problem_json: false
-  description: >-
-    HTTP status codes carry the outcome (200/400/403/404/429/500/503); the docs
-    do not publish an RFC 9457 problem+json envelope.
-  ref: errors/mattermark-problem-types.yml
-  source: https://developer.mattermark.com/docs/rest-responses-errors
-query_language:
-  name: MSFL
-  full_name: Mattermark Search Filter Language
-  description: >-
-    JSON filter dialect used by the REST query endpoints (e.g. POST
-    /query/investors) and the GraphQL API to express complex company/investor
-    searches.
-versioning:
-  scheme: dual-api
-  apis:
-  - kind: REST
-    base_url: https://api.mattermark.com/
-  - kind: GraphQL
-    base_url: https://eapi.mattermark.com/
-  ref: lifecycle/mattermark-lifecycle.yml
-idempotency:
-  supported: false
-  note: The documentation does not define an idempotency-key contract.
+content_negotiation:
+  produces: [application/json]
+  requires_https: true
+  http_supported: false
+identifiers:
+  rest: numeric string ids (e.g. "10808576")
+  graphql: 'prefixed composite ids — "c#<id>" for companies, "i#<id>" for investors'
+  cross_surface_note: >-
+    The GraphQL prefix form is not interchangeable with the REST numeric form
+    without stripping the prefix; the docs state the prefix explicitly.
+  search_join_key: SearchItem.object_id joins autocomplete rows back to /companies/{id} or /investors/{id}
+cross_links:
+  authentication: authentication/mattermark-authentication.yml
+  errors: errors/mattermark-problem-types.yml
+  lifecycle: lifecycle/mattermark-lifecycle.yml
+  rate_limits: rate-limits/mattermark-rate-limits.yml
+  data_model: data-model/mattermark-data-model.yml
+  sandbox: sandbox/mattermark-sandbox.yml

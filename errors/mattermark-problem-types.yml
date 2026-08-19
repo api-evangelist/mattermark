@@ -1,12 +1,19 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: searched
-source: https://developer.mattermark.com/docs/rest-responses-errors
-docs: https://developer.mattermark.com/docs/rest-responses-errors
+source: https://docs.mattermark.com/rest_api/getting_started/index.html
+docs:
+- https://docs.mattermark.com/rest_api/getting_started/index.html
+- https://developer.mattermark.com/docs/rest-responses-errors
+derived_from: openapi/mattermark-rest-api-openapi.yml
 format: http-status
 problem_json: false
 envelope_note: >-
-  Mattermark signals outcomes with HTTP status codes; the documentation does
-  not publish an RFC 9457 application/problem+json body shape.
+  Mattermark signals outcomes with HTTP status codes only. Neither the
+  documentation nor the first-party Swagger definition publishes an RFC 9457
+  application/problem+json body, an error code registry, or any error body
+  schema — the spec's 400 responses carry a description string and no schema.
+  An agent therefore cannot distinguish failure causes programmatically beyond
+  the status code.
 problems:
 - status: 200
   title: OK
@@ -14,25 +21,58 @@ problems:
 - status: 400
   title: Bad Request
   meaning: Your request was not properly sent.
-  remediation: Check request parameters, MSFL query body, and content type.
+  remediation: Check query parameters, the MSFL query body, and the content type.
+  spec_declared: true
+  spec_description: bad input parameter
+  source_operations:
+  - openapi/mattermark-rest-api-openapi.yml#search
+  - openapi/mattermark-rest-api-openapi.yml#get_companies
+  - openapi/mattermark-rest-api-openapi.yml#searchFunding
 - status: 403
   title: Unauthorized
   meaning: >-
     Your API key is wrong, is no longer valid, or you do not have access to the
     given resource.
-  remediation: Verify the Authorization Bearer API key and account entitlements.
+  remediation: >-
+    Verify the Authorization Bearer key (or the `key` query parameter) and the
+    account's entitlements. Note Mattermark returns 403, not 401, for
+    authentication failures and sends no WWW-Authenticate challenge.
+  spec_declared: false
 - status: 404
   title: Not Found
   meaning: The specified endpoint could not be found.
+  spec_declared: false
 - status: 429
   title: Rate Limit Exceeded
   meaning: You have temporarily exceeded your rate limit.
   remediation: >-
-    Back off until X-Quota-Reset; check https://api.mattermark.com/ratelimit/usage
-    (does not consume quota).
+    Back off until the X-Quota-Reset timestamp. Check
+    https://api.mattermark.com/ratelimit/usage, which does not consume quota.
+    No Retry-After header is sent.
+  spec_declared: false
+  ref: rate-limits/mattermark-rate-limits.yml
 - status: 500
   title: Internal Server Error
   meaning: We had a problem with our server. Try again later.
+  spec_declared: false
 - status: 503
   title: Service Unavailable
   meaning: We're temporarily offline for maintenance. Please try again later.
+  spec_declared: false
+spec_coverage:
+  operations_total: 11
+  operations_with_4xx_declared: 3
+  operations_with_only_200: 8
+  finding: >-
+    Eight of eleven operations declare a 200 response and nothing else, so the
+    published contract does not describe the failure modes the documentation
+    lists. This is a contract-quality gap worth raising with the provider rather
+    than papering over.
+graphql_errors:
+  envelope: 'GraphQL standard — {"errors": [...], "data": {...}}'
+  evidence: >-
+    The provider-published introspection response at
+    docs.mattermark.com/graphql_api/schema.json opens with an "errors": []
+    array, confirming the standard GraphQL error envelope.
+  typed_errors: false
+  note: The schema declares no error union or typed error objects.

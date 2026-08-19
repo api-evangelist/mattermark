@@ -1,0 +1,94 @@
+generated: '2026-08-14'
+method: searched
+source: https://mattermark.com/pricing
+docs: https://mattermark.com/pricing
+currency: USD
+plan_count: 4
+summary: >-
+  Mattermark publishes seat-based subscription pricing for its web application
+  and integrations. The published tiers price access to the Mattermark dataset
+  per user; API access is not sold as a separately priced tier on the public
+  pricing page. The REST and GraphQL APIs are documented as requiring an
+  "Enterprise API key" / full API access, which is arranged through sales, so
+  API pricing itself is quote-only.
+trial:
+  offered: true
+  length_days: 14
+  credit_card_required: false
+  label: Start Your Free 14-Day Trial
+plans:
+- name: Mattermark Standard
+  price: 49
+  currency: USD
+  period: month
+  unit: per user
+  billing: month-to-month
+  quota: null
+  overage: null
+  includes:
+  - Over 80 data points for over 4 million companies
+  - Recent news for over 4 million companies
+  - Saved lists and recommended searches
+  - Funding & venture capital portfolio data
+  api_access: false
+- name: Mattermark Professional
+  price: 500
+  currency: USD
+  period: month
+  unit: per user
+  billing: annual contract
+  quota: null
+  overage: null
+  includes:
+  - Everything in Standard
+  - Export company data to CSV
+  - In-browser, Excel and Google Sheets access
+  api_access: false
+- name: Mattermark Enterprise
+  price: null
+  price_label: Custom
+  currency: USD
+  period: null
+  unit: per seat
+  billing: annual contract
+  contact_sales: true
+  includes:
+  - Everything in Professional
+  - Add Mattermark data to Google Sheets
+  - Add Mattermark data to Windows Excel spreadsheets
+  - Team sharing of lists & searches
+  - Discount on multiple seats
+  - Dedicated account manager
+  api_access: true
+  api_note: >-
+    The API documentation refers to a "Mattermark Enterprise API key" and
+    directs prospects to sales@mattermark.com, so full API access is associated
+    with this quote-only tier.
+- name: Salesforce Data Enrichment
+  price: 49
+  currency: USD
+  period: month
+  unit: per seat
+  billing: annual contract
+  category: add-on
+  includes:
+  - Automatically enrich leads in Salesforce
+  api_access: false
+api_pricing:
+  published: false
+  note: >-
+    No per-call, per-quota or per-tier API price is published. The docs describe
+    a per-account request quota whose absolute limit is account dependent (see
+    rate-limits/mattermark-rate-limits.yml); the quota number is not attached to
+    any published plan.
+  sales_contact: sales@mattermark.com
+  signup_page: https://mattermark.com/app/api_signup
+  signup_page_status: 404
+  signup_page_note: >-
+    The API signup URL linked from the REST and GraphQL docs returns HTTP 404 at
+    probe time, so there is no working self-serve path to API credentials.
+evidence:
+- url: https://mattermark.com/pricing
+  status: 200
+- url: https://mattermark.com/app/api_signup
+  status: 404

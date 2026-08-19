@@ -1,4 +1,4 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
@@ -7,6 +7,13 @@ hosts:
   tls_version: TLSv1.3
   cert_expires: Sep 29 23:18:40 2026 GMT
   hsts: false
+- host: developer.mattermark.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 22 15:57:26 2026 GMT
+  hsts: null
+- host: api.mattermark.com
+  https: false
 domains:
 - domain: mattermark.com
   dnssec: false

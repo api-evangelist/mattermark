@@ -1,60 +1,177 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: derived
-source: https://developer.mattermark.com/reference
-note: >-
-  Entity graph derived from the documented REST resource paths (no OpenAPI
-  schema was available). Relationships reflect the URL structure and documented
-  resources, not a published component schema.
+source:
+- openapi/mattermark-rest-api-openapi.yml
+- graphql/mattermark-schema.json
+docs:
+- https://docs.mattermark.com/rest_api/index.html
+- https://docs.mattermark.com/graphql_api/index.html
+summary: >-
+  Entity-relationship graph for the Mattermark dataset, derived from two
+  machine-readable contracts captured in this repo: the first-party Swagger 2.0
+  definition (11 operations, 40 definitions) published at
+  github.com/Mattermark/mattermark-openapi, and the provider-published GraphQL
+  introspection result (57 types) at docs.mattermark.com/graphql_api/schema.json.
+  The two surfaces model the same data core differently: REST splits companies
+  and investors into separate resources, while GraphQL unifies both under a
+  single Organization type discriminated by companyPersona / investorPersona.
+supersedes:
+  previous_method: derived-from-documented-url-paths
+  correction: >-
+    The previous revision of this file was derived from documentation prose and
+    recorded two endpoints that do not exist in the published specification:
+    "/companies/{id}/personnel" (the real path is /companies/{id}/people) and
+    "/funding-events" (the real path is /fundings). Both are corrected here
+    against the first-party spec.
+surfaces:
+- kind: rest
+  spec: openapi/mattermark-rest-api-openapi.yml
+  base_url: https://api.mattermark.com
+  operations: 11
+- kind: graphql
+  schema: graphql/mattermark.graphql
+  introspection: graphql/mattermark-schema.json
+  base_url: https://eapi.mattermark.com
+  root_type: RootQuery
+  mutations: none
+  note: Read-only schema — the published introspection reports mutationType null.
 entities:
 - name: company
-  description: A company profile (of ~4M) with 80+ fields.
-  endpoints:
-  - GET /companies
-  - GET /companies/{id}
-- name: story
-  description: A news article / story attached to a company.
-  endpoints:
-  - GET /companies/{id}/stories
-- name: person
-  description: An employee / key contact at a company.
-  endpoints:
-  - GET /companies/{id}/personnel
+  rest_definition: CompanyItem
+  graphql_type: Organization
+  graphql_discriminator: companyPersona
+  description: >-
+    A company profile. The REST CompanyItem carries 45 fields including the
+    Mattermark Score, staged employee counts (current / 1 month ago / 6 months
+    ago), web and mobile traction, funding totals and location.
+  id_form: "numeric string (REST); \"c#<id>\" (GraphQL organization(id:))"
+  operations:
+  - GET /companies                # get_companies
+  - GET /companies/{id}           # get_company
+  key_fields: [id, name, domain, website, mattermark_score, stage, total_funding, employees]
 - name: investor
-  description: An investor (firm or individual).
-  endpoints:
-  - GET /investors/{id}
-  - POST /query/investors
-- name: funding_event
-  description: A funding round / event.
-  endpoints:
-  - GET /funding-events
+  rest_definition: InvestorItem
+  graphql_type: Organization
+  graphql_discriminator: investorPersona
+  description: >-
+    An investor (firm or individual), modelled in REST as its own resource with
+    portfolio and deal aggregates, and in GraphQL as an Organization carrying an
+    investorPersona.
+  id_form: "numeric string (REST); \"i#<id>\" (GraphQL organization(id:))"
+  operations:
+  - GET /investors/{id}           # get_investor
+  - GET /investors/{id}/portfolio # get_investor_portfolio
+  - POST /queries                 # query_investors
+  key_fields: [id, name, mm_slug, type, portfolio_size, number_of_deals, top_industries]
+- name: person
+  rest_definition: PeopleItem
+  graphql_type: Employee
+  description: An employee / key contact at a company (name + title).
+  operations:
+  - GET /companies/{id}/people    # get_company_personnel
+  key_fields: [name, title, path]
+- name: contact_details
+  graphql_type: ContactDetails
+  description: >-
+    Email lookup for a (name, organization) pair. GraphQL-only — there is no
+    equivalent REST operation in the published spec.
+  graphql_field: contactDetails(name, orgId)
+  key_fields: [name, orgId, email]
+- name: funding_round
+  rest_definition: FundingItem
+  graphql_type: FundingRound
+  description: A funding round / event, with series, amount, date and investors.
+  operations:
+  - GET /fundings                 # searchFunding
+  key_fields: [id, company_id, series, amount, currency, rounds_funding_date, investors]
+- name: story
+  rest_definition: CompanyStory
+  description: A news article attached to a company.
+  operations:
+  - GET /companies/{id}/stories   # get_company_stories
+  key_fields: [id, title, url, published_at, source_title]
+- name: similar_company
+  rest_definition: SimilarCompany
+  description: A company algorithmically similar to a given company, with a probability score.
+  operations:
+  - GET /companies/{id}/similar   # get_similar_companies
+  key_fields: [id, company_name, domain, probability, stage, total_funding]
+- name: search_result
+  rest_definition: SearchItem
+  description: >-
+    A lightweight autocomplete row spanning both companies and investors,
+    discriminated by object_type; object_id is the join key back to the
+    company or investor resource.
+  operations:
+  - GET /search                   # search
+  key_fields: [object_type, object_id, object_name, object_slug, company_domain]
+- name: investment
+  graphql_type: Investment
+  description: The link row joining a funding round to an investing Organization.
+  key_fields: [amount, investor]
+- name: office
+  graphql_type: Office
+  description: A physical office, resolving to a Location hierarchy.
+- name: location
+  graphql_type: Location
+  rest_definition: Location
+  description: >-
+    Geography, modelled in GraphQL as a hierarchy of City, State, Zip, Country,
+    Continent and Region nodes.
+  key_fields: [name, city, state, zip, country, continent, region]
+- name: quota
+  graphql_type: Quota
+  rest_definition: null
+  description: Current API request quota standing for the authenticated account.
+  operations:
+  - GET /ratelimit/usage          # quota
+  key_fields: [limit, remaining, reset]
+- name: viewer
+  graphql_type: Viewer
+  description: >-
+    The authenticated account itself (name, email, company) with its embedded
+    Quota. GraphQL-only.
+  key_fields: [id, fullName, email, company, quota]
+- name: page_metadata
+  rest_definition: Metadata
+  description: The REST paging envelope returned under the "meta" key.
+  key_fields: [total_record_count, total_pages, current_page, per_page]
 relationships:
-- from: company
-  to: story
-  kind: has_many
-  via: /companies/{id}/stories
-- from: company
-  to: person
-  kind: has_many
-  via: /companies/{id}/personnel
-- from: company
-  to: company
-  kind: has_many
-  via: /companies/{id}/similar
-  label: similar_companies
-- from: company
-  to: funding_event
-  kind: has_many
-  via: funding-events (by company)
-- from: investor
-  to: company
-  kind: has_many
-  via: /investors/{id}/portfolio
-- from: funding_event
-  to: company
-  kind: belongs_to
-  via: company reference
-- from: funding_event
-  to: investor
-  kind: has_many
-  via: investors participating in the round
+- {from: company, to: story, kind: has_many, via: 'GET /companies/{id}/stories'}
+- {from: company, to: person, kind: has_many, via: 'GET /companies/{id}/people'}
+- {from: company, to: similar_company, kind: has_many, via: 'GET /companies/{id}/similar'}
+- {from: company, to: funding_round, kind: has_many, via: 'CompanyItem.funding / Organization.fundingRounds'}
+- {from: company, to: company, kind: has_many, via: 'CompanyItem.acquired_by (Acquired_By) / Organization.acquiredBy', label: acquired_by}
+- {from: company, to: office, kind: has_many, via: 'Organization.offices'}
+- {from: company, to: location, kind: has_one, via: 'CompanyItem.location / Office.location'}
+- {from: company, to: person, kind: has_many, via: 'Organization.personnel'}
+- {from: investor, to: company, kind: has_many, via: 'GET /investors/{id}/portfolio', label: portfolio}
+- {from: investor, to: funding_round, kind: has_many, via: 'InvestorItem.funding_rounds_path'}
+- {from: funding_round, to: company, kind: belongs_to, via: 'FundingItem.company_id / FundingRoundSummary.companyId'}
+- {from: funding_round, to: investment, kind: has_many, via: 'FundingRound.investments'}
+- {from: investment, to: investor, kind: belongs_to, via: 'Investment.investor (Organization)'}
+- {from: search_result, to: company, kind: belongs_to, via: 'object_id when object_type == company'}
+- {from: search_result, to: investor, kind: belongs_to, via: 'object_id when object_type == investor'}
+- {from: office, to: location, kind: has_one, via: 'Office.location'}
+- {from: viewer, to: quota, kind: has_one, via: 'Viewer.quota'}
+- {from: contact_details, to: company, kind: belongs_to, via: 'contactDetails(orgId:)'}
+surface_divergence:
+  graphql_only:
+  - {entity: viewer, reason: No REST operation returns account identity.}
+  - {entity: contact_details, reason: Email lookup is exposed only as a GraphQL query field.}
+  - {entity: organization_metrics, reason: 'Organization.organizationMetrics / TimeSeriesMetric time-series have no REST resource.'}
+  - {entity: feed, reason: 'Organization.feed (FeedBase / FeedEvent) has no REST equivalent.'}
+  rest_only:
+  - {entity: similar_company, reason: 'GET /companies/{id}/similar has no GraphQL field.'}
+  - {entity: story, reason: 'GET /companies/{id}/stories has no GraphQL field in the published schema.'}
+  - {entity: search_result, reason: 'The autocomplete /search endpoint has no GraphQL analogue.'}
+  note: >-
+    Neither surface is a superset of the other. A consumer needing account
+    identity, contact email or time-series metrics must use GraphQL; a consumer
+    needing autocomplete, news or similarity must use REST.
+query_language:
+  name: Mattermark Search Filter Language (MSFL)
+  used_by:
+  - 'POST /queries (REST, BETA)'
+  - 'organizationSummaryQuery(msfl:) (GraphQL)'
+  docs: https://docs.mattermark.com/graphql_api/msfl/index.html

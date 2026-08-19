@@ -1,33 +1,112 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: derived
-source: >-
-  developer.mattermark.com docs (auth, paging, quotas, errors) + registry/DNS
-  probes; no OpenAPI available to assert spec-level conformance.
+source:
+- openapi/mattermark-rest-api-openapi.yml
+- graphql/mattermark-schema.json
+- https://docs.mattermark.com/
+docs: https://docs.mattermark.com/
+note: >-
+  Standards assertions derived from the two machine-readable contracts captured
+  in this repo plus the published documentation. The previous revision of this
+  file recorded "no OpenAPI available"; a first-party Swagger 2.0 definition has
+  since been located in the company's own GitHub organisation and several
+  assertions below are now spec-backed rather than prose-backed.
 standards:
-- id: oauth2
-  conforms: false
-  evidence: Auth is a static Bearer API key; no OAuth 2.0 authorization/token flow.
-- id: openid-connect
-  conforms: false
-  evidence: No /.well-known/openid-configuration (404).
-- id: bearer-token-auth
-  conforms: true
-  evidence: 'Authorization: Bearer <api key> documented for REST and GraphQL.'
-- id: rfc9457-problem-details
-  conforms: false
-  evidence: Errors are HTTP status codes; no application/problem+json envelope documented.
+- id: openapi
+  conforms: partial
+  version: 'Swagger 2.0'
+  evidence: >-
+    github.com/Mattermark/mattermark-openapi publishes a valid Swagger 2.0
+    document with 11 operations, 40 definitions, unique operationIds, summaries,
+    descriptions, tags and inline response examples. It predates OpenAPI 3.x and
+    has not been migrated (last pushed 2018-05-24).
+  gaps:
+  - Swagger 2.0 rather than OpenAPI 3.x
+  - 8 of 11 operations declare only a 200 response, no 4xx/5xx
+  - The documented `key` query-parameter auth is not declared as a security definition
 - id: graphql
   conforms: true
-  evidence: GraphQL API published at https://eapi.mattermark.com/ with MSFL queries.
+  evidence: >-
+    A GraphQL API is published at https://eapi.mattermark.com/ and the provider
+    publishes its own introspection result at
+    docs.mattermark.com/graphql_api/schema.json (57 types, RootQuery, no
+    mutations), plus the introspection query itself at
+    graphql_api/introspection.gql.
+- id: graphql-relay-connections
+  conforms: true
+  evidence: >-
+    The schema implements the Relay conventions — a Node interface with a
+    node(id:) root field, and Connection/Edge/PageInfo types for organization
+    summaries and funding-round summaries.
 - id: rest
   conforms: true
-  evidence: RESTful resource endpoints published at https://api.mattermark.com/.
+  evidence: Resource-oriented HTTP endpoints under https://api.mattermark.com/ returning application/json.
+- id: bearer-token-auth
+  conforms: true
+  evidence: >-
+    'Authorization: Bearer <api key>' documented for both surfaces and declared
+    as the APIKeyHeaderParam security definition in the Swagger document.
+- id: oauth2
+  conforms: false
+  evidence: Static account API key only; no authorization or token endpoint exists.
+- id: openid-connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every reachable host.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors are bare HTTP status codes. No application/problem+json media type
+    appears in the specification or the documentation.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No deprecation or sunset policy is published; no Sunset header is documented.
+- id: rfc9331-ratelimit-headers
+  conforms: false
+  evidence: >-
+    Rate-limit state is signalled with the proprietary X-Quota-Limit /
+    X-Quota-Remaining / X-Quota-Reset trio rather than the standard RateLimit-*
+    family, and no Retry-After is sent on 429.
 - id: pagination
   conforms: true
-  evidence: Page-number pagination (page/per_page) with meta paging fields.
-- id: rate-limit-signaling
-  conforms: true
-  evidence: X-Quota-Limit / X-Quota-Remaining / X-Quota-Reset headers + 429.
+  evidence: >-
+    REST uses page/per_page with a meta envelope (Metadata definition);
+    GraphQL uses Relay connections with PageInfo.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No idempotency key header or parameter in the specification or the
+    documentation. Ten of eleven operations are GET and idempotent by HTTP
+    semantics, but the single POST publishes no de-duplication contract.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on mattermark.com and developer.mattermark.com.
+- id: rfc8615-well-known
+  conforms: false
+  evidence: No /.well-known/ document is served on any reachable host (see well-known/mattermark-well-known.yml).
+- id: https-only
+  conforms: partial
+  evidence: >-
+    The documentation states HTTP is not supported and the API is served over
+    HTTPS. In practice neither API host completes a TLS handshake at all
+    (SSL alert 112), so the stated posture cannot currently be exercised.
+- id: mcp
+  conforms: false
+  evidence: No MCP server is published; mcp/mattermark-mcp.yml holds a derived candidate only.
+- id: a2a
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json return 404 on all reachable hosts.
+- id: asyncapi
+  conforms: false
+  applicable: false
+  evidence: >-
+    Mattermark publishes no webhooks, callbacks, streaming or event surface —
+    nothing in the specification or the documentation describes one. Not
+    applicable rather than failed.
 compliance_program:
   published: false
-  note: No trust center or named certifications (SOC 2 / ISO 27001 / etc.) found.
+  certifications: []
+  trust_center: null
+  note: >-
+    No trust center, no named certifications (SOC 2 / ISO 27001 / PCI DSS /
+    HIPAA / FedRAMP) and no compliance page were found. No Compliance pointer is
+    emitted in apis.yml.

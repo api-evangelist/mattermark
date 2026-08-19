@@ -1,9 +1,25 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: searched
-source: npm, PyPI, RubyGems registry search for "mattermark"
-note: >-
-  Mattermark publishes no first-party SDKs. The libraries below are
-  community/third-party wrappers of the Mattermark API (official: false).
+source: >-
+  registry.npmjs.org, pypi.org, rubygems.org metadata endpoints + the Mattermark
+  GitHub organisation (https://github.com/Mattermark)
+summary: >-
+  Mattermark publishes NO first-party client SDK in any package registry. Its
+  entire GitHub organisation contains a single public repository, and that
+  repository holds the OpenAPI/Swagger definition rather than a client library.
+  The three packages below are community wrappers by third parties; all are
+  official: false. Every one of them was last published between 2014 and 2017 —
+  before the 2019 relaunch — so no maintained client library exists for this API
+  in any language.
+official_sdk_count: 0
+first_party_repositories:
+- name: mattermark-openapi
+  url: https://github.com/Mattermark/mattermark-openapi
+  description: Swagger (OpenAPI v2.0) definition of the Mattermark REST API.
+  kind: specification
+  is_client_library: false
+  last_pushed: '2018-05-24'
+  captured_to: openapi/_original/mattermark-swagger.yaml
 packages:
 - language: javascript
   registry: npm
@@ -11,24 +27,48 @@ packages:
   url: https://www.npmjs.com/package/mattermark
   install: npm install mattermark
   official: false
+  version: 0.0.2
+  published: '2015-12-13'
   author: Chris Dzoba
   repository: https://github.com/dzoba/mattermark
   description: A node module that wraps the Mattermark API.
+  note: >-
+    Community wrapper. Last release 2015-12-13, more than three years before
+    Mattermark's 2019 relaunch; unmaintained.
 - language: python
   registry: pypi
   name: mattermark
   url: https://pypi.org/project/mattermark/
   install: pip install mattermark
   official: false
+  version: 0.4.1
+  published: '2017-02-16'
   author: Carl Cortright
   repository: https://github.com/FoundryGroup/Mattermark
   description: Wrapper for the Mattermark API.
+  note: >-
+    Community wrapper published under the Foundry Group organisation. Last
+    release 2017-02-16; unmaintained.
 - language: ruby
   registry: rubygems
   name: mattermark
   url: https://rubygems.org/gems/mattermark
   install: gem install mattermark
   official: false
+  version: 0.1.1
+  published: '2014-09-02'
   author: Andrew Thorp
   repository: https://github.com/andrewpthorp/mattermark
   description: Ruby client for the Mattermark API.
+  note: Community wrapper. Last release 2014-09-02; unmaintained.
+registries_checked:
+- {registry: npm, endpoint: 'https://registry.npmjs.org/mattermark', result: third-party package found}
+- {registry: pypi, endpoint: 'https://pypi.org/pypi/mattermark/json', result: third-party package found}
+- {registry: rubygems, endpoint: 'https://rubygems.org/api/v1/gems/mattermark.json', result: third-party package found}
+- {registry: github, endpoint: 'https://api.github.com/orgs/mattermark/repos', result: '1 public repo, specification only, no client library'}
+decay_signal:
+  newest_client_release: '2017-02-16'
+  api_relaunch: '2019-02-14'
+  finding: >-
+    Every published client library predates the relaunch of the API it wraps. No
+    package in any registry has been released in the nine years to 2026.

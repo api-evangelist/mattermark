@@ -1,19 +1,66 @@
-generated: '2026-07-20'
-method: searched
-source: live probes of https://mattermark.com/.well-known/*
-host: https://mattermark.com
-documents:
-- path: /.well-known/security.txt
-  status: 404
-- path: /.well-known/openid-configuration
-  status: 404
-- path: /.well-known/oauth-authorization-server
-  status: 404
-- path: /.well-known/api-catalog
-  status: 404
-- path: /.well-known/ai-plugin.json
-  status: 404
-note: >-
-  No /.well-known/ discovery documents are published on mattermark.com. The API
-  developer hub (developer.mattermark.com) publishes an llms.txt instead
-  (see llms/mattermark-llms.txt).
+generated: '2026-08-14'
+method: probed
+source: live probes of /.well-known/* on every Mattermark host in apis.yml + the OpenAPI servers host
+summary: >-
+  No /.well-known/ discovery document is served on any Mattermark host. All
+  eight canonical paths were probed on all three reachable hosts and every one
+  missed (404 on the two origin hosts, 403 from the CloudFront distribution in
+  front of the static docs site). The two API hosts could not be probed at all —
+  they no longer complete a TLS handshake. This file records an ABSENCE: no
+  WellKnown, SecurityTxt, APICatalog or AgentCard pointer is emitted in apis.yml
+  because the provider serves none of these documents.
+hosts:
+- host: https://mattermark.com
+  reachable: true
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://developer.mattermark.com
+  reachable: true
+  note: ReadMe-hosted developer hub
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://docs.mattermark.com
+  reachable: true
+  note: >-
+    Static MkDocs site behind CloudFront; the distribution answers 403 (rather
+    than 404) for any path with no matching S3 object. Treated as a miss, not a
+    document.
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/oauth-protected-resource, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+  - {path: /.well-known/agent-card.json, status: 403}
+  - {path: /.well-known/agent.json, status: 403}
+- host: https://api.mattermark.com
+  reachable: false
+  failure: TLS handshake rejected — SSL alert 112 (unrecognized_name); no certificate served for this SNI
+  documents: []
+- host: https://eapi.mattermark.com
+  reachable: false
+  failure: TLS handshake rejected — SSL alert 112 (unrecognized_name); no certificate served for this SNI
+  documents: []
+llms_txt:
+  present: true
+  url: https://developer.mattermark.com/llms.txt
+  status: 200
+  file: ../llms/mattermark-llms.txt
+  note: >-
+    The ReadMe developer hub emits an llms.txt automatically. It is captured in
+    llms/ and pointed at by the LLMsTxt type; it is not a /.well-known/ document.

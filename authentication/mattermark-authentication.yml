@@ -1,28 +1,91 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: searched
-source: https://developer.mattermark.com/docs/rest-requests-authentication
-docs: https://developer.mattermark.com/docs
+source: https://docs.mattermark.com/rest_api/getting_started/index.html
+docs:
+- https://docs.mattermark.com/rest_api/getting_started/index.html
+- https://docs.mattermark.com/graphql_api/getting_started/index.html
+- https://developer.mattermark.com/docs
+spec_source: openapi/mattermark-rest-api-openapi.yml
 summary:
-  types: [http]
+  types: [apiKey, http]
   http_schemes: [bearer]
-  api_key_in: []
+  api_key_in: [header, query]
   oauth2_flows: []
+  oidc: false
+description: >-
+  Mattermark authenticates both the REST API (https://api.mattermark.com/) and
+  the GraphQL API (https://eapi.mattermark.com/) with a single static account
+  API key. The key is accepted two ways: as an HTTP Bearer token in the
+  Authorization header (the form the published Swagger definition declares), or
+  as a `key` query-string parameter (documented on the REST getting-started
+  page). There is no OAuth 2.0 or OpenID Connect surface, no scope model, no
+  token exchange and no key rotation or expiry policy in the documentation.
 schemes:
-- name: bearerAuth
-  type: http
-  scheme: bearer
-  description: >-
-    Mattermark authenticates REST (https://api.mattermark.com/) and GraphQL
-    (https://eapi.mattermark.com/) requests with an API key passed as an HTTP
-    Bearer token in the Authorization header: "Authorization: Bearer <your api
-    key>". Keys are issued from the API Settings section of a Mattermark
-    account. There is no OAuth 2.0 / OpenID Connect surface and no scope model.
-  header: Authorization
+- name: APIKeyHeaderParam
+  type: apiKey
+  in: header
+  parameter: Authorization
   format: 'Bearer <api key>'
-  key_provisioning: Mattermark account -> API Settings
+  source: openapi/mattermark-rest-api-openapi.yml
+  spec_declared: true
+  description: >-
+    The security definition declared in the first-party Swagger 2.0 document and
+    applied globally via a root-level `security` requirement, so every one of
+    the 11 operations requires it.
   applies_to:
   - https://api.mattermark.com/
   - https://eapi.mattermark.com/
+- name: keyQueryParam
+  type: apiKey
+  in: query
+  parameter: key
+  source: https://docs.mattermark.com/rest_api/getting_started/index.html
+  spec_declared: false
+  description: >-
+    "We look for your API key in the key query parameter or the Authentication
+    header." Every REST example in the docs uses this form
+    (e.g. GET /companies?key=[YOUR KEY]). It is NOT declared in the published
+    Swagger definition, so the specification understates the auth surface.
+  applies_to:
+  - https://api.mattermark.com/
+  risk: >-
+    Keys passed in a query string are logged by intermediaries, proxies and
+    browser history. The provider documents no rotation path.
+key_provisioning:
+  source: Mattermark account -> API settings page
+  urls:
+  - {url: 'https://mattermark.com/app/account/api', status: 404}
+  - {url: 'https://mattermark.com/app/api_signup', status: 404}
+  sales_contact: sales@mattermark.com
+  note: >-
+    Both credential URLs linked from the documentation return HTTP 404 at probe
+    time, so there is no working self-serve path to obtain a key. Provisioning
+    is effectively sales-gated.
+  entitlement: >-
+    The docs distinguish trial access (max 50 results, no paging) from full
+    "Enterprise API key" access.
+published_credentials:
+- kind: sandbox
+  host: https://eapi-sandbox.mattermark.com
+  scope: GraphQL sandbox, static data, no quota
+  ref: sandbox/mattermark-sandbox.yml
+  note: >-
+    A shared non-secret sandbox key is published verbatim in the GraphQL docs.
+    Captured in the sandbox artifact; the host is no longer reachable.
+transport_security:
+  https_required: true
+  http_supported: false
+  statement: >-
+    "The Mattermark API is served over HTTPS. To ensure data privacy,
+    unencrypted HTTP is not supported."
+  observed: >-
+    Both API hosts reject the TLS handshake with alert 112 (unrecognized_name);
+    no certificate is served for either SNI. See
+    security/mattermark-domain-security.yml.
 notes:
-- No published OpenAPI/Swagger security scheme document was available (docs are
-  hosted on a ReadMe hub); this profile was searched from the developer docs.
+- >-
+  Superseded the previous revision, which recorded only the Bearer header form.
+  The `key` query parameter and the spec-declared APIKeyHeaderParam security
+  definition were added after the first-party Swagger document was located at
+  github.com/Mattermark/mattermark-openapi.
+- No OAuth 2.0 / OIDC surface exists, so scopes/ is intentionally not emitted.

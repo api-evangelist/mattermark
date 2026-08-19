@@ -1,0 +1,98 @@
+generated: '2026-08-14'
+method: searched
+source: https://docs.mattermark.com/graphql_api/index.html
+docs:
+- https://docs.mattermark.com/graphql_api/index.html
+- https://docs.mattermark.com/rest_api/index.html
+summary: >-
+  Mattermark publishes a sandbox endpoint for the GraphQL (Enterprise) API with
+  static data and no quota limits, plus a documented "Trial Access" mode on the
+  REST API that caps results at 50 records with paging disabled. Both are
+  captured verbatim from the provider's documentation. NOTE: at probe time the
+  sandbox hostnames no longer resolve to a live service (dangling CNAMEs to
+  deleted AWS Elastic Beanstalk environments), so the documented sandbox is not
+  currently callable — see availability below.
+test_live_separation:
+  model: separate-hostname
+  note: >-
+    Production and sandbox are separated by hostname, not by key prefix. The
+    same Authorization Bearer header is used; only the host changes.
+environments:
+- name: production-graphql
+  kind: live
+  host: https://eapi.mattermark.com
+  quota: account quota applies
+- name: sandbox-graphql
+  kind: sandbox
+  host: https://eapi-sandbox.mattermark.com
+  data: static
+  quota: none
+  published_key: 08e723e5b6e9e9f64784e2500d240d7ef3a567e39347327be792c2805a1c2d20
+  published_key_note: >-
+    Shared, non-secret sandbox key published verbatim in the Mattermark GraphQL
+    API documentation for anonymous evaluation. Not a customer credential.
+  source: https://docs.mattermark.com/graphql_api/index.html
+- name: production-rest
+  kind: live
+  host: https://api.mattermark.com
+  quota: account quota applies
+- name: sandbox-rest
+  kind: sandbox
+  host: https://api-sandbox.mattermark.com
+  data: static
+  note: >-
+    Not documented on the REST pages; the hostname exists in DNS alongside the
+    documented GraphQL sandbox. Recorded as observed DNS, not as a published
+    Mattermark offering.
+  source: dns
+trial_access:
+  documented: true
+  source: https://docs.mattermark.com/rest_api/index.html
+  applies_to: https://api.mattermark.com
+  max_results: 50
+  paging_enabled: false
+  note: >-
+    "When you are trying out the Mattermark API, you will have access to a test
+    version which will provide you with up to 50 results, please note you will
+    not be able to page through the results." Full paging is unlocked once the
+    account is upgraded to full API access.
+free_trial:
+  product: Mattermark web application
+  length_days: 14
+  credit_card_required: false
+  source: https://mattermark.com/pricing
+tooling:
+  graphiql:
+    documented: true
+    source: https://docs.mattermark.com/graphql_api/getting_started/index.html
+    instructions: >-
+      Run a local GraphiQL explorer via Docker
+      (`docker run -it -p3000:3000 vitalcode/auth-graphiql`), open
+      http://localhost:3000/graphql, set Host to https://eapi.mattermark.com and
+      Token to the Enterprise API token.
+    image: vitalcode/auth-graphiql
+    first_party: false
+  quota_probe:
+    endpoint: https://api.mattermark.com/ratelimit/usage
+    consumes_quota: false
+    operation: openapi/mattermark-rest-api-openapi.yml#quota
+test_values: []
+test_values_note: >-
+  Mattermark is a data provider, not a payments provider: it publishes no test
+  cards, test bank accounts or magic identifiers. The only published test
+  credential is the shared sandbox key above.
+availability:
+  checked: '2026-08-14'
+  status: unreachable
+  evidence:
+  - host: eapi-sandbox.mattermark.com
+    dns: CNAME prod-eapi-sandbox.us-east-1.elasticbeanstalk.com (no A record)
+    https_status: 000
+    finding: dangling CNAME to a deleted Elastic Beanstalk environment
+  - host: api-sandbox.mattermark.com
+    dns: CNAME prod-dwapi-sandbox.us-east-1.elasticbeanstalk.com (no A record)
+    https_status: 000
+    finding: dangling CNAME to a deleted Elastic Beanstalk environment
+  note: >-
+    The sandbox documentation remains published and unchanged while the backing
+    infrastructure is gone. Recorded as a documented-but-not-callable surface.

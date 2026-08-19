@@ -1,0 +1,26 @@
+generated: '2026-08-14'
+method: generated
+source: openapi/mattermark-rest-api-openapi.yml
+note: >-
+  Packaged Agent Skills for the Mattermark REST API. Every operationId
+  referenced below is verified verbatim against the first-party Swagger 2.0
+  definition captured in openapi/. Each skill opens with an availability check
+  because api.mattermark.com does not currently complete a TLS handshake — the
+  contract is real and first-party, but not callable at capture time.
+searched_for_provider_skills:
+  result: none
+  checked:
+  - https://github.com/Mattermark (1 public repo, specification only — no AGENTS.md or skill files)
+  - https://docs.mattermark.com/
+  - https://developer.mattermark.com/
+skills:
+- file: mattermark-company-lookup-and-enrich.md
+  name: Look up a company and enrich it from Mattermark
+  description: Resolve a company by name or domain, then pull its full profile, news and key contacts.
+  api: openapi/mattermark-rest-api-openapi.yml
+  operations: [search, get_company, get_companies, get_company_stories, get_company_personnel]
+- file: mattermark-investor-portfolio-and-funding.md
+  name: Analyse an investor's portfolio and funding activity with Mattermark
+  description: Resolve an investor, walk their portfolio companies, and pull funding events, with MSFL for complex segmentation.
+  api: openapi/mattermark-rest-api-openapi.yml
+  operations: [search, get_investor, get_investor_portfolio, searchFunding, query_investors, quota]

@@ -1,32 +1,104 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: searched
-source: https://developer.mattermark.com/docs/rest-quotas-usage
-docs: https://developer.mattermark.com/docs/rest-quotas-usage
+source: https://docs.mattermark.com/rest_api/getting_started/index.html
+docs:
+- https://docs.mattermark.com/rest_api/getting_started/index.html
+- https://docs.mattermark.com/graphql_api/getting_started/index.html
+- https://developer.mattermark.com/docs/rest-quotas-usage
 model: quota-per-period
+limit_count: 1
 description: >-
-  Mattermark enforces per-account request quotas. Each response carries quota
-  headers, and a free usage endpoint reports current standing. Exceeding the
-  quota returns HTTP 429. The absolute limit_count is account/plan dependent and
-  is not published in the public docs.
+  Mattermark enforces a per-account request quota rather than a per-second rate.
+  Every response on both the REST and GraphQL surfaces carries three quota
+  headers, and a dedicated usage endpoint reports current standing without
+  consuming quota. Exceeding the quota returns HTTP 429. The absolute quota
+  number is account/plan dependent and is not published as a plan attribute; the
+  documentation's worked example shows a 10,000-request period, which is
+  recorded below as an example value, not as a committed tier limit.
 headers:
 - name: X-Quota-Limit
   description: Your current request limit.
+  returned_on: every response
 - name: X-Quota-Remaining
   description: Number of remaining requests in the current period.
+  returned_on: every response
 - name: X-Quota-Reset
   description: Unix timestamp (seconds, UTC) of the start of the next quota period.
+  returned_on: every response
+retry_after_header: false
+standard_ratelimit_headers: false
+standard_ratelimit_note: >-
+  Mattermark uses X-Quota-* rather than the RFC 9331 RateLimit-* family, and
+  does not send Retry-After on 429. An agent must read X-Quota-Reset to know
+  when to retry.
 usage_endpoint:
   url: https://api.mattermark.com/ratelimit/usage
+  operation: openapi/mattermark-rest-api-openapi.yml#quota
   consumes_quota: false
+  method: GET
+  response_fields: [quota_limit, quota_remaining, quota_reset, quota_period]
+  example_response: |
+    [
+      {
+        "quota_limit": 10000,
+        "quota_remaining": 9999,
+        "quota_reset": 1498694400,
+        "quota_period": 1498694400
+      }
+    ]
+graphql_equivalent:
+  field: viewer.quota
+  type: Quota
+  fields: [limit, remaining, reset]
+  source: graphql/mattermark-schema.json
 exceeded:
   status: 429
   title: Rate Limit Exceeded
+  body: not specified
+  recovery: Back off until the X-Quota-Reset timestamp.
 rate_limits:
 - name: account-quota
   scope: per-api-key
   window: quota-period
-  limit_count: null
-  signal_headers:
-  - X-Quota-Limit
-  - X-Quota-Remaining
-  - X-Quota-Reset
+  limit: null
+  limit_example: 10000
+  limit_example_source: https://docs.mattermark.com/rest_api/getting_started/index.html
+  burst: null
+  signal_headers: [X-Quota-Limit, X-Quota-Remaining, X-Quota-Reset]
+  exceeded_status: 429
+  note: >-
+    Absolute limit is account/plan dependent and unpublished. The example above
+    is the value shown in the documentation's sample usage response.
+result_caps:
+- name: trial-access-cap
+  scope: trial accounts
+  applies_to: 'GET /companies and other paged endpoints'
+  max_results: 50
+  paging_enabled: false
+  source: https://docs.mattermark.com/rest_api/index.html
+  note: >-
+    A trial account receives at most 50 results and cannot page. This is an
+    entitlement cap rather than a rate limit, but it is the binding constraint
+    for any unpaid consumer.
+- name: page-size
+  default_per_page: 10
+  documented_max_per_page: 50
+  params: [page, per_page]
+  source: https://docs.mattermark.com/rest_api/getting_started/index.html
+- name: graphql-organizations-batch
+  scope: 'GraphQL organizations(ids:, domains:) query'
+  max: 5
+  unit: organizations per query
+  source: https://docs.mattermark.com/graphql_api/getting_started/index.html
+- name: graphql-funding-rounds-page
+  scope: fundingRoundSummaryQuery
+  max: 50
+  unit: rounds per call
+  source: https://docs.mattermark.com/graphql_api/getting_started/index.html
+observed:
+  probed: '2026-08-14'
+  result: not observable
+  reason: >-
+    Live header observation was impossible — api.mattermark.com rejects the TLS
+    handshake (SSL alert 112, unrecognized_name), so no response headers could
+    be captured. All values above are read from the published documentation.

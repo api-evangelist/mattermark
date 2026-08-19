@@ -1,0 +1,97 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Mattermark REST API
+  version: 1.0.0
+x-generated: '2026-08-14'
+x-method: generated
+x-source: openapi/mattermark-rest-api-openapi.yml
+x-note: >-
+  Captures API Evangelist's enrichment of the first-party Swagger 2.0 document
+  published at github.com/Mattermark/mattermark-openapi. The harvested original
+  is never mutated; this overlay records what we learned that the specification
+  does not say. Two things dominate: the specification omits the `key`
+  query-parameter authentication form that the documentation demonstrates in
+  every example, and the host it names no longer completes a TLS handshake.
+extends: openapi/mattermark-rest-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-slug: mattermark
+    x-apievangelist-profile: https://apis.io/provider/mattermark
+    x-spec-source: https://github.com/Mattermark/mattermark-openapi
+    x-spec-last-pushed: '2018-05-24'
+    x-documentation:
+    - https://docs.mattermark.com/rest_api/index.html
+    - https://developer.mattermark.com/docs
+- target: $.info
+  update:
+    x-availability:
+      checked: '2026-08-14'
+      host_reachable: false
+      finding: >-
+        https://api.mattermark.com rejects the TLS handshake with SSL alert 112
+        (unrecognized_name); the hostname resolves to the marketing site's IP,
+        which serves no certificate for it. The specification is valid and
+        published, but no operation in it is currently callable.
+- target: $.securityDefinitions
+  update:
+    KeyQueryParam:
+      type: apiKey
+      in: query
+      name: key
+      description: >-
+        Documented alternative authentication form. "We look for your API key in
+        the key query parameter or the Authentication header." Every REST
+        example in the Mattermark documentation uses this form, but the
+        published specification declares only the Authorization header variant.
+        Added by API Evangelist so the declared auth surface matches the
+        documented one. Source:
+        https://docs.mattermark.com/rest_api/getting_started/index.html
+- target: $.paths['/companies'].get
+  update:
+    x-pagination:
+      style: page-number
+      params: [page, per_page]
+      default_per_page: 10
+      documented_max_per_page: 50
+      envelope: meta
+      fields: [total_record_count, total_pages, current_page, per_page]
+    x-entitlement:
+      trial_max_results: 50
+      trial_paging_enabled: false
+      source: https://docs.mattermark.com/rest_api/index.html
+- target: $.paths['/fundings'].get
+  update:
+    x-pagination:
+      style: page-number
+      params: [page, per_page]
+      envelope: meta
+    x-graphql-equivalent: fundingRoundSummaryQuery
+- target: $.paths['/queries'].post
+  update:
+    x-maturity: beta
+    x-maturity-source: https://docs.mattermark.com/rest_api/queries/index.html
+    x-query-language: Mattermark Search Filter Language (MSFL)
+    x-idempotency: none
+- target: $.paths['/ratelimit/usage'].get
+  update:
+    x-consumes-quota: false
+    x-rate-limit-headers: [X-Quota-Limit, X-Quota-Remaining, X-Quota-Reset]
+    x-graphql-equivalent: viewer.quota
+- target: $.paths['/search'].get
+  update:
+    x-join-key:
+      field: object_id
+      resolves_to: ['/companies/{id}', '/investors/{id}']
+      discriminator: object_type
+- target: $.paths
+  update:
+    x-undeclared-error-responses:
+      note: >-
+        The documentation publishes a status-code table that the specification
+        does not declare on most operations. Eight of eleven operations declare
+        only a 200. Documented but undeclared: 403 Unauthorized, 404 Not Found,
+        429 Rate Limit Exceeded, 500 Internal Server Error, 503 Service
+        Unavailable.
+      source: https://docs.mattermark.com/rest_api/getting_started/index.html
+      catalog: errors/mattermark-problem-types.yml

@@ -1,47 +1,87 @@
-generated: '2026-07-20'
+generated: '2026-08-14'
 method: derived
 status: candidate
-source: >-
-  Derived from the documented REST endpoints at
-  https://developer.mattermark.com/reference. No official/hosted Mattermark MCP
-  server was found.
+source: openapi/mattermark-rest-api-openapi.yml
+search_note: >-
+  Searched for an official or community Mattermark MCP server across the
+  Mattermark GitHub organisation (1 public repo, specification only), npm, PyPI
+  and the public MCP registries. None exists. The tool list below is DERIVED
+  from the first-party Swagger 2.0 definition — one candidate tool per
+  operationId — and is a proposal, not a server Mattermark ships.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+  note: >-
+    Nobody ships an MCP server for Mattermark — neither a remote endpoint nor a
+    stdio package. mode is none because this artifact is a derived candidate.
+    Were one built, it would authenticate with the same Bearer API key the REST
+    API uses. Note also that the backing REST host does not currently complete a
+    TLS handshake (see lifecycle/mattermark-lifecycle.yml), so a server built
+    from this list would not be callable today.
 server:
   name: mattermark
   transport: http
-  base_url: https://api.mattermark.com/
+  base_url: https://api.mattermark.com
   auth: 'Authorization: Bearer <api key>'
   url: null
 tools:
 - name: search
-  description: Search for companies or investors.
-  source_operation: 'GET /search'
-- name: list_companies
-  description: Retrieve a list of companies (supports MSFL filtering + paging).
-  source_operation: 'GET /companies'
+  description: Search for companies or investors by term, optionally limited by object type.
+  source_operation: openapi/mattermark-rest-api-openapi.yml#search
+  http: GET /search
+  inputs: [term, object_types]
+- name: get_companies
+  description: Retrieve a list of companies, filtered by any of the documented segmentation parameters.
+  source_operation: openapi/mattermark-rest-api-openapi.yml#get_companies
+  http: GET /companies
+  inputs: [company_name, domain, business_models, industries, keywords, stage, location, page, per_page]
 - name: get_company
-  description: Retrieve a specific company profile.
-  source_operation: 'GET /companies/{id}'
-- name: list_company_stories
+  description: Retrieve a specific company profile by id.
+  source_operation: openapi/mattermark-rest-api-openapi.yml#get_company
+  http: GET /companies/{id}
+  inputs: [id]
+- name: get_company_stories
   description: Retrieve news articles for a company.
-  source_operation: 'GET /companies/{id}/stories'
-- name: list_similar_companies
-  description: Retrieve companies similar to a given company.
-  source_operation: 'GET /companies/{id}/similar'
-- name: list_company_personnel
+  source_operation: openapi/mattermark-rest-api-openapi.yml#get_company_stories
+  http: GET /companies/{id}/stories
+  inputs: [id]
+- name: get_similar_companies
+  description: Retrieve companies algorithmically similar to a given company.
+  source_operation: openapi/mattermark-rest-api-openapi.yml#get_similar_companies
+  http: GET /companies/{id}/similar
+  inputs: [id]
+- name: get_company_personnel
   description: Retrieve employees / key contacts for a company.
-  source_operation: 'GET /companies/{id}/personnel'
-- name: list_funding_events
+  source_operation: openapi/mattermark-rest-api-openapi.yml#get_company_personnel
+  http: GET /companies/{id}/people
+  inputs: [id]
+- name: search_funding
   description: Retrieve a list of funding events.
-  source_operation: 'GET /funding-events'
+  source_operation: openapi/mattermark-rest-api-openapi.yml#searchFunding
+  http: GET /fundings
+  inputs: [page, per_page]
 - name: get_investor
-  description: Retrieve a specific investor.
-  source_operation: 'GET /investors/{id}'
+  description: Retrieve a specific investor by id.
+  source_operation: openapi/mattermark-rest-api-openapi.yml#get_investor
+  http: GET /investors/{id}
+  inputs: [id]
 - name: get_investor_portfolio
   description: Retrieve an investor's portfolio companies.
-  source_operation: 'GET /investors/{id}/portfolio'
+  source_operation: openapi/mattermark-rest-api-openapi.yml#get_investor_portfolio
+  http: GET /investors/{id}/portfolio
+  inputs: [id]
 - name: query_investors
-  description: Perform a complex investor query with MSFL.
-  source_operation: 'POST /query/investors'
-- name: get_quota
-  description: Check remaining API quota (does not consume quota).
-  source_operation: 'GET /quota'
+  description: Perform a complex investor query using the Mattermark Search Filter Language (MSFL).
+  source_operation: openapi/mattermark-rest-api-openapi.yml#query_investors
+  http: POST /queries
+  inputs: [dataset, filter]
+- name: quota
+  description: Check remaining API quota. Does not consume quota.
+  source_operation: openapi/mattermark-rest-api-openapi.yml#quota
+  http: GET /ratelimit/usage
+  inputs: []
+tool_count: 11

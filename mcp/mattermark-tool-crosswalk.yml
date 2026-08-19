@@ -1,0 +1,144 @@
+generated: '2026-08-14'
+method: derived
+source:
+- openapi/mattermark-rest-api-openapi.yml
+- graphql/mattermark-schema.json
+- mcp/mattermark-mcp.yml
+summary: >-
+  Crosswalk binding Mattermark's three projections of one data core: the
+  first-party Swagger 2.0 REST contract (11 operations), the provider-published
+  GraphQL schema (7 root query fields, 57 types), and the DERIVED candidate MCP
+  tool list. Because no MCP server exists, every crosswalk row binds a candidate
+  tool to the REST operation it was derived from — those bindings are
+  high-confidence by construction. The genuinely interesting divergence here is
+  REST vs GraphQL: neither surface is a superset of the other.
+surfaces:
+  openapi:
+    file: openapi/mattermark-rest-api-openapi.yml
+    version: swagger 2.0
+    host: https://api.mattermark.com
+    operations: 11
+    gated: false
+    note: Specification is public on the provider's own GitHub org; the host itself is unreachable.
+  graphql:
+    endpoint: https://eapi.mattermark.com/
+    schema: graphql/mattermark.graphql
+    introspection: graphql/mattermark-schema.json
+    root_fields: 7
+    gated: false
+    note: >-
+      Live introspection could not be run — the host rejects the TLS handshake.
+      The schema captured here is the provider's own published introspection
+      result, downloaded from docs.mattermark.com, so field names and argument
+      types are authoritative rather than inferred.
+  mcp:
+    url: null
+    exists: false
+    note: No MCP server is published by Mattermark or by any third party.
+crosswalk:
+- tool: search
+  category: discovery
+  rest: [search]
+  graphql: []
+  binding: rest
+  confidence: high
+  note: Autocomplete search has no GraphQL analogue.
+- tool: get_companies
+  category: companies
+  rest: [get_companies]
+  graphql: [organizationSummaryQuery]
+  binding: rest
+  confidence: high
+  note: >-
+    GraphQL reaches the same list capability through organizationSummaryQuery
+    with an MSFL filter rather than query-string segmentation parameters.
+- tool: get_company
+  category: companies
+  rest: [get_company]
+  graphql: [organization, organizations]
+  binding: rest
+  confidence: high
+  note: 'GraphQL organization(id: "c#<id>") or organization(domain:) is the equivalent lookup.'
+- tool: get_company_stories
+  category: news
+  rest: [get_company_stories]
+  graphql: []
+  binding: rest
+  confidence: high
+- tool: get_similar_companies
+  category: companies
+  rest: [get_similar_companies]
+  graphql: []
+  binding: rest
+  confidence: high
+- tool: get_company_personnel
+  category: people
+  rest: [get_company_personnel]
+  graphql: [organization]
+  binding: rest
+  confidence: high
+  note: GraphQL exposes the same data as Organization.personnel ([Employee]).
+- tool: search_funding
+  category: funding
+  rest: [searchFunding]
+  graphql: [fundingRoundSummaryQuery]
+  binding: rest
+  confidence: high
+  note: >-
+    fundingRoundSummaryQuery accepts a richer filter set (amountRaisedMin/Max,
+    cities, countries, fundingDateMin/Max, investorIds, investorSlugs, series,
+    states) than the REST /fundings query parameters.
+- tool: get_investor
+  category: investors
+  rest: [get_investor]
+  graphql: [organization]
+  binding: rest
+  confidence: high
+  note: 'GraphQL models investors as Organization with an investorPersona; id form "i#<id>".'
+- tool: get_investor_portfolio
+  category: investors
+  rest: [get_investor_portfolio]
+  graphql: []
+  binding: rest
+  confidence: high
+- tool: query_investors
+  category: query
+  rest: [query_investors]
+  graphql: [organizationSummaryQuery]
+  binding: rest
+  confidence: medium
+  note: >-
+    Both accept MSFL. The REST POST /queries endpoint is documented as BETA and
+    is dataset-scoped; the GraphQL field returns OrganizationSummary connections.
+- tool: quota
+  category: account
+  rest: [quota]
+  graphql: [viewer]
+  binding: rest
+  confidence: high
+  note: GraphQL returns the same counters as Viewer.quota (limit/remaining/reset).
+mcp_only: []
+mcp_only_note: >-
+  Empty by construction — the candidate tool list was derived from REST, so no
+  tool can exist without a backing operation.
+graphql_only:
+- {field: viewer, reason: 'Account identity (firstName, fullName, email, company) has no REST operation; REST exposes only the quota counters.'}
+- {field: contactDetails, reason: 'Email lookup for a (name, orgId) pair is exposed only in GraphQL. Marked "Deprecated" in the schema description.'}
+- {field: 'Organization.organizationMetrics', reason: 'TimeSeriesMetric / TimeSeriesMetricPoint time-series have no REST resource.'}
+- {field: 'Organization.feed', reason: 'FeedBase / FeedEvent activity feed has no REST equivalent.'}
+- {field: 'Organization.products', reason: 'Product / Platform records have no REST resource.'}
+- {field: 'Organization.ipos', reason: 'InitialPublicOffering records have no REST resource.'}
+- {field: node, reason: 'Relay-style node(id:) global object lookup is a GraphQL-native affordance.'}
+rest_only:
+- {operation: search, capability: autocomplete}
+- {operation: get_similar_companies, capability: company similarity}
+- {operation: get_company_stories, capability: company news}
+coverage:
+  tools_named: 11
+  tools_bound_to_rest: 11
+  tools_bound_to_graphql: 6
+  mcp_only: 0
+  graphql_only_fields: 7
+  rest_operations_total: 11
+  rest_operations_with_tool: 11
+  rest_operations_with_graphql_equivalent: 6
