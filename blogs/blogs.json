@@ -9,7 +9,7 @@
       "method": "feed"
     },
     {
-      "source": "https://mattermark.com/privacy",
+      "source": "https://mattermark.com/privacy-policy/",
       "feed_url": "https://mattermark.com/feed/",
       "title": "",
       "saved": 0,
@@ -17,5 +17,5 @@
     }
   ],
   "post_count": 10,
-  "fetched": "2026-08-15T12:11:08Z"
+  "fetched": "2026-08-22T20:20:02Z"
 }
