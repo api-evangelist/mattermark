@@ -44,42 +44,12 @@ tags:
 - Sales Intelligence
 - Market Research
 apis:
-- name: Mattermark REST API
-  description: >-
-    RESTful access to Mattermark company, investor, funding-event, news and
-    personnel data, with page-based pagination and MSFL query endpoints.
-  humanURL: https://developer.mattermark.com/reference
-  baseURL: https://api.mattermark.com/
-  properties:
-  - type: OpenAPI
-    url: openapi/mattermark-rest-api-openapi.yml
-  - type: Documentation
-    url: https://developer.mattermark.com/docs
-  - type: Documentation
-    name: Mattermark REST API docs (docs.mattermark.com)
-    url: https://docs.mattermark.com/rest_api/index.html
-  - type: APIReference
-    url: https://developer.mattermark.com/reference
-  - type: SourceCode
-    name: First-party OpenAPI/Swagger repository
-    url: https://github.com/Mattermark/mattermark-openapi
-  - type: Authentication
-    url: authentication/mattermark-authentication.yml
-  - type: Overlay
-    url: overlays/mattermark-rest-api-overlay.yaml
-  - type: Conventions
-    url: conventions/mattermark-conventions.yml
-  - type: ErrorCatalog
-    url: errors/mattermark-problem-types.yml
-  - type: DataModel
-    url: data-model/mattermark-data-model.yml
 - name: Mattermark GraphQL API
   description: >-
-    GraphQL access to the Mattermark dataset using the Mattermark Search Filter
-    Language (MSFL) for complex company and investor queries. Read-only: the
-    published schema declares 57 types under a single RootQuery and no mutation
-    type. Organizations model both companies and investors, discriminated by
-    companyPersona / investorPersona.
+    GraphQL access to the Mattermark dataset using the Mattermark Search Filter Language (MSFL) for complex
+    company and investor queries. Read-only: the published schema declares 57 types under a single RootQuery
+    and no mutation type. Organizations model both companies and investors, discriminated by companyPersona
+    / investorPersona.
   humanURL: https://developer.mattermark.com/graphql
   baseURL: https://eapi.mattermark.com/
   properties:
@@ -92,6 +62,162 @@ apis:
     url: https://docs.mattermark.com/graphql_api/index.html
   - type: Authentication
     url: authentication/mattermark-authentication.yml
+- aid: mattermark:mattermark-companies-api
+  name: Mattermark Companies API
+  description: The Companies API from Mattermark — 5 operation(s) for companies.
+  humanURL: https://developer.mattermark.com/reference
+  baseURL: https://api.mattermark.com/
+  tags:
+  - Companies
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermark-companies-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mattermark.com/docs
+  - type: Documentation
+    url: https://docs.mattermark.com/rest_api/index.html
+  - type: APIReference
+    url: https://developer.mattermark.com/reference
+  - type: SourceCode
+    url: https://github.com/Mattermark/mattermark-openapi
+  - type: Authentication
+    url: authentication/mattermark-authentication.yml
+  - type: Conventions
+    url: conventions/mattermark-conventions.yml
+  - type: ErrorCatalog
+    url: errors/mattermark-problem-types.yml
+  - type: DataModel
+    url: data-model/mattermark-data-model.yml
+- aid: mattermark:mattermark-complex-queries-api
+  name: Mattermark Complex Queries API
+  description: The Complex Queries API from Mattermark — 1 operation(s) for complex queries.
+  humanURL: https://developer.mattermark.com/reference
+  baseURL: https://api.mattermark.com/
+  tags:
+  - Complex Queries
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermark-complex-queries-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mattermark.com/docs
+  - type: Documentation
+    url: https://docs.mattermark.com/rest_api/index.html
+  - type: APIReference
+    url: https://developer.mattermark.com/reference
+  - type: SourceCode
+    url: https://github.com/Mattermark/mattermark-openapi
+  - type: Authentication
+    url: authentication/mattermark-authentication.yml
+  - type: Conventions
+    url: conventions/mattermark-conventions.yml
+  - type: ErrorCatalog
+    url: errors/mattermark-problem-types.yml
+  - type: DataModel
+    url: data-model/mattermark-data-model.yml
+- aid: mattermark:mattermark-funding-events-api
+  name: Mattermark Funding Events API
+  description: The Funding Events API from Mattermark — 1 operation(s) for funding events.
+  humanURL: https://developer.mattermark.com/reference
+  baseURL: https://api.mattermark.com/
+  tags:
+  - Funding Events
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermark-funding-events-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mattermark.com/docs
+  - type: Documentation
+    url: https://docs.mattermark.com/rest_api/index.html
+  - type: APIReference
+    url: https://developer.mattermark.com/reference
+  - type: SourceCode
+    url: https://github.com/Mattermark/mattermark-openapi
+  - type: Authentication
+    url: authentication/mattermark-authentication.yml
+  - type: Conventions
+    url: conventions/mattermark-conventions.yml
+  - type: ErrorCatalog
+    url: errors/mattermark-problem-types.yml
+  - type: DataModel
+    url: data-model/mattermark-data-model.yml
+- aid: mattermark:mattermark-investors-api
+  name: Mattermark Investors API
+  description: The Investors API from Mattermark — 2 operation(s) for investors.
+  humanURL: https://developer.mattermark.com/reference
+  baseURL: https://api.mattermark.com/
+  tags:
+  - Investors
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermark-investors-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mattermark.com/docs
+  - type: Documentation
+    url: https://docs.mattermark.com/rest_api/index.html
+  - type: APIReference
+    url: https://developer.mattermark.com/reference
+  - type: SourceCode
+    url: https://github.com/Mattermark/mattermark-openapi
+  - type: Authentication
+    url: authentication/mattermark-authentication.yml
+  - type: Conventions
+    url: conventions/mattermark-conventions.yml
+  - type: ErrorCatalog
+    url: errors/mattermark-problem-types.yml
+  - type: DataModel
+    url: data-model/mattermark-data-model.yml
+- aid: mattermark:mattermark-search-api
+  name: Mattermark Search API
+  description: The Search API from Mattermark — 1 operation(s) for search.
+  humanURL: https://developer.mattermark.com/reference
+  baseURL: https://api.mattermark.com/
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermark-search-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mattermark.com/docs
+  - type: Documentation
+    url: https://docs.mattermark.com/rest_api/index.html
+  - type: APIReference
+    url: https://developer.mattermark.com/reference
+  - type: SourceCode
+    url: https://github.com/Mattermark/mattermark-openapi
+  - type: Authentication
+    url: authentication/mattermark-authentication.yml
+  - type: Conventions
+    url: conventions/mattermark-conventions.yml
+  - type: ErrorCatalog
+    url: errors/mattermark-problem-types.yml
+  - type: DataModel
+    url: data-model/mattermark-data-model.yml
+- aid: mattermark:mattermark-utilities-api
+  name: Mattermark Utilities API
+  description: The Utilities API from Mattermark — 1 operation(s) for utilities.
+  humanURL: https://developer.mattermark.com/reference
+  baseURL: https://api.mattermark.com/
+  tags:
+  - Utilities
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermark-utilities-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mattermark.com/docs
+  - type: Documentation
+    url: https://docs.mattermark.com/rest_api/index.html
+  - type: APIReference
+    url: https://developer.mattermark.com/reference
+  - type: SourceCode
+    url: https://github.com/Mattermark/mattermark-openapi
+  - type: Authentication
+    url: authentication/mattermark-authentication.yml
+  - type: Conventions
+    url: conventions/mattermark-conventions.yml
+  - type: ErrorCatalog
+    url: errors/mattermark-problem-types.yml
+  - type: DataModel
+    url: data-model/mattermark-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
