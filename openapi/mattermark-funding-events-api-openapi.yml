@@ -1,0 +1,224 @@
+openapi: 3.2.0
+info:
+  description: Mattermark REST API
+  version: 1.0.0
+  title: Mattermark REST Funding Events API
+  contact:
+    email: support@mattermark.com
+servers:
+- url: https://api.mattermark.com
+security:
+- APIKeyHeaderParam: []
+tags:
+- name: Funding Events
+paths:
+  /fundings:
+    get:
+      tags:
+      - Funding Events
+      summary: Retrieve a list of funding events
+      operationId: searchFunding
+      description: Retrieve a list of funding events for a specific query
+      parameters:
+      - in: query
+        name: amount
+        description: money reported raised in the funding round
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - in: query
+        name: city
+        description: pipe separated list of city names
+        schema:
+          type: string
+          format: list
+      - in: query
+        name: country
+        description: list of three character country codes
+        schema:
+          type: string
+          format: list
+      - in: query
+        name: funding_date_range
+        description: range of funding dates
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: investor_ids
+        description: list of investor ids
+        style: pipeDelimited
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: investor_slugs
+        description: list of investor slugs, see Investors to get a list of all investors.
+        style: pipeDelimited
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: series
+        description: list of series
+        style: pipeDelimited
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - a
+            - b
+            - c
+            - d
+            - e
+            - f
+            - g
+            - h
+            - i
+            - angel
+            - seed
+            - debt_financing
+            - private_equity
+            - undisclosed
+      - $ref: '#/components/parameters/pageParam'
+      - $ref: '#/components/parameters/limitParam'
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fundings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FundingItem'
+                  meta:
+                    $ref: '#/components/schemas/Metadata'
+        400:
+          description: bad input parameter
+components:
+  parameters:
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: The page of items from the result set to return.
+      schema:
+        type: integer
+        minimum: 0
+    limitParam:
+      in: query
+      name: per_page
+      required: false
+      description: The numbers of items to return per page.
+      schema:
+        type: integer
+        default: 10
+        maximum: 50
+        minimum: 1
+  schemas:
+    Metadata:
+      type: object
+      properties:
+        total_record_count:
+          type: integer
+          example: 10000
+        total_pages:
+          type: integer
+          example: 1000
+        current_page:
+          type: integer
+          example: 1
+        per_page:
+          type: integer
+          example: 10
+    FundingItem:
+      type: object
+      required:
+      - id
+      - company_id
+      - company_name
+      - investors
+      - investor_slugs
+      - series
+      - rounds_funding_date
+      - amount
+      - currency
+      - news_url
+      - industry
+      - region
+      - city
+      - state
+      - country
+      - funding_id
+      - created_on
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 2082133
+        company_id:
+          type: integer
+          format: int64
+          example: 20872
+        company_name:
+          type: string
+          example: Netsmart Technologies
+        investors:
+          type: string
+          example: Genstar Capital
+        investor_slugs:
+          type: string
+          example: genstar-capital
+        series:
+          type: string
+          example: debt_financing
+        rounds_funding_date:
+          type: string
+          example: '2015-03-02'
+        amount:
+          type: integer
+          format: int64
+          example: 250000000
+        currency:
+          type: string
+          example: USD
+        news_url:
+          type: string
+          example: http://www.abladvisor.com/news/6534/golub-capital-provides-250mm-facility-to-support-netsmart-recap
+        industry:
+          type: string
+          example: Enterprise Software,Health IT,Healthcare
+        region:
+          type: string
+          example: null
+        city:
+          type: string
+          example: Great River
+        state:
+          type: string
+          example: NY
+        country:
+          type: string
+          example: USA
+        funding_id:
+          type: integer
+          format: int64
+          example: 2082133
+        created_on:
+          type: string
+          example: '2015-03-02 19:59:35'
+  securitySchemes:
+    APIKeyHeaderParam:
+      type: apiKey
+      in: header
+      name: Authorization

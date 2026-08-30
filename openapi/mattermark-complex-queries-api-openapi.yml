@@ -1,0 +1,54 @@
+openapi: 3.2.0
+info:
+  description: Mattermark REST API
+  version: 1.0.0
+  title: Mattermark REST Complex Queries API
+  contact:
+    email: support@mattermark.com
+servers:
+- url: https://api.mattermark.com
+security:
+- APIKeyHeaderParam: []
+tags:
+- name: Complex Queries
+paths:
+  /queries:
+    post:
+      tags:
+      - Complex Queries
+      summary: Perform a complex investor query
+      operationId: query_investors
+      description: Returns a list of investors matching the MSFL query. The [Mattermark Semantic Filter Language](/docs/mattermark-semantic-filter-language) allows you to perform a complex query in a single request.
+      responses:
+        200:
+          description: An investor company object
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - dataset
+              properties:
+                dataset:
+                  type: string
+                  example: investors
+                  enum:
+                  - investors
+                filter:
+                  type: object
+                sort:
+                  type: object
+                per_page:
+                  type: integer
+                  example: 50
+                page:
+                  type: integer
+                  example: 1
+        description: The query to perform.
+components:
+  securitySchemes:
+    APIKeyHeaderParam:
+      type: apiKey
+      in: header
+      name: Authorization

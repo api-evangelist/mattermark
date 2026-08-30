@@ -1,0 +1,348 @@
+openapi: 3.2.0
+info:
+  description: Mattermark REST API
+  version: 1.0.0
+  title: Mattermark REST Investors API
+  contact:
+    email: support@mattermark.com
+servers:
+- url: https://api.mattermark.com
+security:
+- APIKeyHeaderParam: []
+tags:
+- name: Investors
+paths:
+  /investors/{id}:
+    get:
+      tags:
+      - Investors
+      summary: Retrieve a specific investor
+      operationId: get_investor
+      description: Returns details for a specific investor. Information includes the size of their portfolio and some stats around their portfolio and funding deals.
+      parameters:
+      - in: path
+        name: id
+        description: The ID of the investor to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An investor object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestorItem'
+  /investors/{id}/portfolio:
+    get:
+      tags:
+      - Investors
+      summary: Retrieve an investor's portfolio companies
+      operationId: get_investor_portfolio
+      description: Returns a list of portfolio companies for a specific investor.
+      parameters:
+      - in: path
+        name: id
+        description: The ID of the investor to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An investor company object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestorCompanies'
+components:
+  schemas:
+    Stages:
+      properties:
+        name:
+          type: string
+          example: a
+        count:
+          type: string
+          example: 42
+    InvestorItem:
+      type: object
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 51
+        name:
+          type: string
+          example: Greycroft Partners
+        mm_slug:
+          type: string
+          format: int32
+          example: Greycroft
+        website:
+          type: string
+          example: greycroft.com
+        type:
+          type: string
+          example: vc
+        location:
+          type: string
+          example: New York
+        portfolio_path:
+          type: string
+          example: /app/data?investors=Greycroft
+        portfolio_size:
+          type: string
+          example: 172
+        number_of_deals:
+          type: string
+          example: 244
+        three_year_funds_sold:
+          type: string
+          example: 381160001
+        funding_rounds_path:
+          type: string
+          example: /app/rounds?investors=Greycroft
+        est_most_recent_fund_date:
+          type: string
+          example: '2015-11-30'
+        most_recent_funding:
+          type: object
+          properties:
+            funding_date:
+              type: string
+              example: '2016-02-04'
+            amount:
+              type: string
+              example: 2250000
+            series:
+              type: string
+              example: seed
+            company:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: 10579847
+                company_name:
+                  type: string
+                  example: Hobnob
+            investors:
+              type: array
+              items:
+                $ref: '#/components/schemas/SimpleInvestorsList'
+        portfolio_aggregates:
+          type: object
+          properties:
+            stages:
+              type: array
+              items:
+                $ref: '#/components/schemas/Stages'
+            locations:
+              type: array
+              items:
+                $ref: '#/components/schemas/Location'
+            business_models:
+              type: array
+              items:
+                $ref: '#/components/schemas/BusinessModel'
+            industries:
+              type: array
+              items:
+                $ref: '#/components/schemas/Industry'
+        deal_aggregates:
+          type: object
+          properties:
+            series:
+              type: array
+              items:
+                $ref: '#/components/schemas/Series'
+            quarterly:
+              type: array
+              items:
+                $ref: '#/components/schemas/Quarterly'
+        top_industries:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopIndustry'
+        most_recent_filings:
+          type: array
+          items:
+            $ref: '#/components/schemas/MostRecentFillings'
+    Quarterly:
+      properties:
+        '2015-07-01':
+          type: object
+          properties:
+            location:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlyLocation'
+            industries:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlySubIndustry'
+            stages:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlySubStage'
+            business_models:
+              items:
+                $ref: '#/components/schemas/QuarterlySubBusinessModel'
+        '2015-04-01':
+          type: object
+          properties:
+            location:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlyLocation'
+            industries:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlySubIndustry'
+            stages:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlySubStage'
+            business_models:
+              items:
+                $ref: '#/components/schemas/QuarterlySubBusinessModel'
+    TopIndustry:
+      properties:
+        industry_name:
+          type: string
+          example: e-commerce
+        investments:
+          type: integer
+          format: int64
+          example: 55
+    InvestorCompanies:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 10808576
+        company_name:
+          type: string
+          example: Blue Smoke LLC
+        domain:
+          type: string
+          example: bluesmokellc.net
+        stage:
+          type: string
+          example: a
+        loction:
+          type: string
+          example: bay area
+        last_funding_date:
+          type: string
+          format: date
+          example: '2016-01-01'
+        total_funding:
+          type: integer
+          example: 1000000
+        investor_first_invested_on:
+          type: string
+          format: date
+          example: '2016-01-01'
+    Industry:
+      properties:
+        name:
+          type: string
+          example: E-Commerce
+        count:
+          type: string
+          example: 37
+    QuarterlySubStage:
+      properties:
+        name:
+          type: string
+          example: a
+        count:
+          type: string
+          example: 2
+    Location:
+      properties:
+        name:
+          type: string
+          example: new york
+        count:
+          type: string
+          example: 44
+    QuarterlySubBusinessModel:
+      properties:
+        name:
+          type: string
+          example: a
+        count:
+          type: string
+          example: B2C
+    Series:
+      properties:
+        name:
+          type: string
+          example: a
+        count:
+          type: string
+          example: 86
+    BusinessModel:
+      properties:
+        name:
+          type: string
+          example: B2C
+        count:
+          type: string
+          example: 102
+    QuarterlyLocation:
+      properties:
+        name:
+          type: string
+          example: minneapolis
+        count:
+          type: string
+          example: 1
+    QuarterlySubIndustry:
+      properties:
+        name:
+          type: string
+          example: Hospitality
+        count:
+          type: string
+          example: 2
+    SimpleInvestorsList:
+      required:
+      - mm_slug
+      discriminator:
+        propertyName: mm_slug
+      properties:
+        mm_slug:
+          type: string
+          example: Greycroft
+        display_name:
+          type: string
+          example: Greycroft Partners
+    MostRecentFillings:
+      properties:
+        entity_name:
+          type: string
+          example: Greycroft Growth, L.P.
+        total_offering:
+          type: string
+          example: 200000000
+        total_sold:
+          type: string
+          example: 200000000
+        filing_date:
+          type: string
+          example: '2014-06-19'
+        form:
+          type: string
+          example: D
+  securitySchemes:
+    APIKeyHeaderParam:
+      type: apiKey
+      in: header
+      name: Authorization

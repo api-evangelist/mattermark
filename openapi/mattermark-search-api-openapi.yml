@@ -1,0 +1,108 @@
+openapi: 3.2.0
+info:
+  description: Mattermark REST API
+  version: 1.0.0
+  title: Mattermark REST Search API
+  contact:
+    email: support@mattermark.com
+servers:
+- url: https://api.mattermark.com
+security:
+- APIKeyHeaderParam: []
+tags:
+- name: Search
+paths:
+  /search:
+    get:
+      tags:
+      - Search
+      summary: Search for companies or investors
+      operationId: search
+      description: The search endpoint can be used to query for a company or investor based on a keyword you define, and is also useful to provide autocompletion for common queries, such as by company name or domain.
+      parameters:
+      - in: query
+        name: term
+        description: The term to query by
+        schema:
+          type: string
+      - in: query
+        name: object_types
+        description: Limits the type of object to return to one of either companies or investors
+        schema:
+          type: string
+          enum:
+          - company
+          - investor
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchItem'
+              example:
+              - object_type: company
+                object_name: Lyft
+                object_slug: 117766/lyft
+                company_domain: lyft.com
+                company_funding: 2637500000
+                company_keywords: null
+                company_mattermark_score: 118
+                investor_funding: 0
+                object_id: 117766
+        400:
+          description: bad input parameter
+components:
+  schemas:
+    SearchItem:
+      type: object
+      required:
+      - object_type
+      - object_name
+      - company_funding
+      - object_slug
+      - company_domain
+      - company_keywords
+      - company_mattermark_score
+      - investor_funding
+      - object_id
+      properties:
+        object_type:
+          type: string
+          format: uuid
+          example: company
+        object_name:
+          type: string
+          example: Lyft
+        company_funding:
+          type: integer
+          format: int64
+          example: 1392500000
+        object_slug:
+          type: string
+          example: 117766/lyft
+        company_domain:
+          type: string
+          example: lyft.com
+        company_keywords:
+          type: string
+          example: nil
+        company_mattermark_score:
+          type: integer
+          format: int64
+          example: 947
+        investor_funding:
+          type: integer
+          format: int64
+          example: 0
+        object_id:
+          type: integer
+          format: int64
+          example: 117766
+  securitySchemes:
+    APIKeyHeaderParam:
+      type: apiKey
+      in: header
+      name: Authorization

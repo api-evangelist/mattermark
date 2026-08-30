@@ -1,0 +1,47 @@
+openapi: 3.2.0
+info:
+  description: Mattermark REST API
+  version: 1.0.0
+  title: Mattermark REST Utilities API
+  contact:
+    email: support@mattermark.com
+servers:
+- url: https://api.mattermark.com
+security:
+- APIKeyHeaderParam: []
+tags:
+- name: Utilities
+paths:
+  /ratelimit/usage:
+    get:
+      tags:
+      - Utilities
+      summary: Check remaining quota
+      operationId: quota
+      description: Returns a count of how many API requests you have left in the current period.
+      responses:
+        200:
+          description: A quota object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quota_limit:
+                    type: integer
+                    example: 100
+                  quota_remaining:
+                    type: integer
+                    example: 99
+                  quota_reset:
+                    type: integer
+                    example: 1498694400
+                  quota_period:
+                    type: integer
+                    example: 1498694400
+components:
+  securitySchemes:
+    APIKeyHeaderParam:
+      type: apiKey
+      in: header
+      name: Authorization
