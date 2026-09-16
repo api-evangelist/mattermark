@@ -30,16 +30,12 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/mattermark.png
 name: Mattermark
-description: >-
-  Mattermark is a business-intelligence platform for data-driven deal making,
-  providing profiles on roughly four million companies and twenty million key
-  contacts along with their investors, funding events, and news. Relaunched as
-  an independent company, Mattermark exposes its dataset through a REST API
-  (api.mattermark.com) and a GraphQL API (eapi.mattermark.com), both
-  authenticated with a Bearer API key and queryable with the Mattermark Search
-  Filter Language (MSFL). Originally an a16z / Slow Ventures / Version One
-  Ventures-backed startup, it is tracked in the API Evangelist network as a
-  company profile.
+description: Mattermark is a business-intelligence platform for data-driven deal making, providing profiles
+  on roughly four million companies and twenty million key contacts along with their investors, funding
+  events, and news. Relaunched as an independent company, Mattermark exposes its dataset through a REST
+  API (api.mattermark.com) and a GraphQL API (eapi.mattermark.com), both authenticated with a Bearer API
+  key and queryable with the Mattermark Search Filter Language (MSFL). Originally an a16z / Slow Ventures
+  / Version One Ventures-backed startup, it is tracked in the API Evangelist network as a company profile.
 url: https://raw.githubusercontent.com/api-evangelist/mattermark/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -51,7 +47,7 @@ x-tier: profiled
 x-tier-reason: portfolio-lead
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-08-14'
+modified: '2026-09-16'
 tags:
 - Company
 - Business Intelligence
@@ -62,11 +58,10 @@ tags:
 - Market Research
 apis:
 - name: Mattermark GraphQL API
-  description: >-
-    GraphQL access to the Mattermark dataset using the Mattermark Search Filter Language (MSFL) for complex
-    company and investor queries. Read-only: the published schema declares 57 types under a single RootQuery
-    and no mutation type. Organizations model both companies and investors, discriminated by companyPersona
-    / investorPersona.
+  description: 'GraphQL access to the Mattermark dataset using the Mattermark Search Filter Language (MSFL)
+    for complex company and investor queries. Read-only: the published schema declares 57 types under
+    a single RootQuery and no mutation type. Organizations model both companies and investors, discriminated
+    by companyPersona / investorPersona.'
   humanURL: https://developer.mattermark.com/graphql
   baseURL: https://eapi.mattermark.com/
   properties:
@@ -279,7 +274,10 @@ common:
   url: changelog/mattermark-changelog.yml
 - type: X-MCPServerCandidate
   url: mcp/mattermark-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
 - type: ToolCrosswalk
   url: mcp/mattermark-tool-crosswalk.yml
 - type: Packages
@@ -291,7 +289,7 @@ common:
 - type: DomainSecurity
   url: security/mattermark-domain-security.yml
 - type: OpenAPI
-  url: openapi/mattermark-rest-api-openapi.yml
+  url: openapi/_original/mattermark-rest-api-openapi.yml
 - type: GraphQL
   url: graphql/mattermark.graphql
 - type: Overlay
