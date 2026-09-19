@@ -52,6 +52,14 @@ tags:
 - Company
 - Business Intelligence
 - Company Data
+- Investor
+- Funding
+- Sales Intelligence
+- Market Research
+tags_raw:
+- Company
+- Business Intelligence
+- Company Data
 - Investors
 - Funding
 - Sales Intelligence
@@ -158,6 +166,8 @@ apis:
   humanURL: https://developer.mattermark.com/reference
   baseURL: https://api.mattermark.com/
   tags:
+  - Investor
+  tags_raw:
   - Investors
   properties:
   - type: OpenAPI
