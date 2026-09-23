@@ -1,0 +1,38 @@
+{
+  "provider": "mattermark",
+  "sources": [
+    "_original/mattermark-rest-api-openapi.yml"
+  ],
+  "outputs": [
+    "mattermark-companies-api-openapi.yml",
+    "mattermark-complex-queries-api-openapi.yml",
+    "mattermark-funding-events-api-openapi.yml",
+    "mattermark-investors-api-openapi.yml",
+    "mattermark-search-api-openapi.yml",
+    "mattermark-utilities-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "mattermark-rest-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "mattermark-rest-api-openapi.yml: declared missing tag: Companies",
+    "mattermark-rest-api-openapi.yml: declared missing tag: Complex Queries",
+    "mattermark-rest-api-openapi.yml: declared missing tag: Funding Events",
+    "mattermark-rest-api-openapi.yml: declared missing tag: Investors",
+    "mattermark-rest-api-openapi.yml: declared missing tag: Search",
+    "mattermark-rest-api-openapi.yml: declared missing tag: Utilities",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/mattermark-swagger.yaml: archived document superseded by a larger archived document",
+    "mattermark-companies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mattermark-complex-queries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mattermark-funding-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mattermark-investors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mattermark-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mattermark-utilities-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

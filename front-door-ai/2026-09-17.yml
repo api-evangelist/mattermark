@@ -1,0 +1,27 @@
+# Front Door AI Index — mattermark — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: mattermark
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: mattermark.com
+  final_host: mattermark.com
+  ownership: own
+  owner: mattermark
+  shares_host_with:
+  - referly
+  inherited_from: null
+  verdict: scored
+  score: 1
+  host_score: 1
+  density: 1.8
+  words: 557
+  tiers:
+    agentic: 0
+    core: 1
+    model: 0
+  ambiguous: 2
+  top_terms:
+    intelligence: 2
+    machine learning: 1

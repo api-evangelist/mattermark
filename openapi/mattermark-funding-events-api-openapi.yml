@@ -107,14 +107,6 @@ paths:
           description: bad input parameter
 components:
   parameters:
-    pageParam:
-      in: query
-      name: page
-      required: false
-      description: The page of items from the result set to return.
-      schema:
-        type: integer
-        minimum: 0
     limitParam:
       in: query
       name: per_page
@@ -125,22 +117,15 @@ components:
         default: 10
         maximum: 50
         minimum: 1
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: The page of items from the result set to return.
+      schema:
+        type: integer
+        minimum: 0
   schemas:
-    Metadata:
-      type: object
-      properties:
-        total_record_count:
-          type: integer
-          example: 10000
-        total_pages:
-          type: integer
-          example: 1000
-        current_page:
-          type: integer
-          example: 1
-        per_page:
-          type: integer
-          example: 10
     FundingItem:
       type: object
       required:
@@ -217,6 +202,21 @@ components:
         created_on:
           type: string
           example: '2015-03-02 19:59:35'
+    Metadata:
+      type: object
+      properties:
+        total_record_count:
+          type: integer
+          example: 10000
+        total_pages:
+          type: integer
+          example: 1000
+        current_page:
+          type: integer
+          example: 1
+        per_page:
+          type: integer
+          example: 10
   securitySchemes:
     APIKeyHeaderParam:
       type: apiKey
