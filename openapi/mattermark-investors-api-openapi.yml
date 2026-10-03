@@ -56,142 +56,6 @@ paths:
                 $ref: '#/components/schemas/InvestorCompanies'
 components:
   schemas:
-    QuarterlySubIndustry:
-      properties:
-        name:
-          type: string
-          example: Hospitality
-        count:
-          type: string
-          example: 2
-    MostRecentFillings:
-      properties:
-        entity_name:
-          type: string
-          example: Greycroft Growth, L.P.
-        total_offering:
-          type: string
-          example: 200000000
-        total_sold:
-          type: string
-          example: 200000000
-        filing_date:
-          type: string
-          example: '2014-06-19'
-        form:
-          type: string
-          example: D
-    Quarterly:
-      properties:
-        '2015-07-01':
-          type: object
-          properties:
-            location:
-              type: array
-              items:
-                $ref: '#/components/schemas/QuarterlyLocation'
-            industries:
-              type: array
-              items:
-                $ref: '#/components/schemas/QuarterlySubIndustry'
-            stages:
-              type: array
-              items:
-                $ref: '#/components/schemas/QuarterlySubStage'
-            business_models:
-              items:
-                $ref: '#/components/schemas/QuarterlySubBusinessModel'
-        '2015-04-01':
-          type: object
-          properties:
-            location:
-              type: array
-              items:
-                $ref: '#/components/schemas/QuarterlyLocation'
-            industries:
-              type: array
-              items:
-                $ref: '#/components/schemas/QuarterlySubIndustry'
-            stages:
-              type: array
-              items:
-                $ref: '#/components/schemas/QuarterlySubStage'
-            business_models:
-              items:
-                $ref: '#/components/schemas/QuarterlySubBusinessModel'
-    QuarterlySubStage:
-      properties:
-        name:
-          type: string
-          example: a
-        count:
-          type: string
-          example: 2
-    Location:
-      properties:
-        name:
-          type: string
-          example: new york
-        count:
-          type: string
-          example: 44
-    Series:
-      properties:
-        name:
-          type: string
-          example: a
-        count:
-          type: string
-          example: 86
-    TopIndustry:
-      properties:
-        industry_name:
-          type: string
-          example: e-commerce
-        investments:
-          type: integer
-          format: int64
-          example: 55
-    Industry:
-      properties:
-        name:
-          type: string
-          example: E-Commerce
-        count:
-          type: string
-          example: 37
-    Stages:
-      properties:
-        name:
-          type: string
-          example: a
-        count:
-          type: string
-          example: 42
-    QuarterlySubBusinessModel:
-      properties:
-        name:
-          type: string
-          example: a
-        count:
-          type: string
-          example: B2C
-    BusinessModel:
-      properties:
-        name:
-          type: string
-          example: B2C
-        count:
-          type: string
-          example: 102
-    QuarterlyLocation:
-      properties:
-        name:
-          type: string
-          example: minneapolis
-        count:
-          type: string
-          example: 1
     InvestorItem:
       type: object
       required:
@@ -299,6 +163,47 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MostRecentFillings'
+    BusinessModel:
+      properties:
+        name:
+          type: string
+          example: B2C
+        count:
+          type: string
+          example: 102
+    Location:
+      properties:
+        name:
+          type: string
+          example: new york
+        count:
+          type: string
+          example: 44
+    TopIndustry:
+      properties:
+        industry_name:
+          type: string
+          example: e-commerce
+        investments:
+          type: integer
+          format: int64
+          example: 55
+    QuarterlySubIndustry:
+      properties:
+        name:
+          type: string
+          example: Hospitality
+        count:
+          type: string
+          example: 2
+    Stages:
+      properties:
+        name:
+          type: string
+          example: a
+        count:
+          type: string
+          example: 42
     SimpleInvestorsList:
       required:
       - mm_slug
@@ -311,6 +216,14 @@ components:
         display_name:
           type: string
           example: Greycroft Partners
+    QuarterlySubStage:
+      properties:
+        name:
+          type: string
+          example: a
+        count:
+          type: string
+          example: 2
     InvestorCompanies:
       type: object
       properties:
@@ -341,6 +254,93 @@ components:
           type: string
           format: date
           example: '2016-01-01'
+    Series:
+      properties:
+        name:
+          type: string
+          example: a
+        count:
+          type: string
+          example: 86
+    Industry:
+      properties:
+        name:
+          type: string
+          example: E-Commerce
+        count:
+          type: string
+          example: 37
+    MostRecentFillings:
+      properties:
+        entity_name:
+          type: string
+          example: Greycroft Growth, L.P.
+        total_offering:
+          type: string
+          example: 200000000
+        total_sold:
+          type: string
+          example: 200000000
+        filing_date:
+          type: string
+          example: '2014-06-19'
+        form:
+          type: string
+          example: D
+    QuarterlySubBusinessModel:
+      properties:
+        name:
+          type: string
+          example: a
+        count:
+          type: string
+          example: B2C
+    Quarterly:
+      properties:
+        '2015-07-01':
+          type: object
+          properties:
+            location:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlyLocation'
+            industries:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlySubIndustry'
+            stages:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlySubStage'
+            business_models:
+              items:
+                $ref: '#/components/schemas/QuarterlySubBusinessModel'
+        '2015-04-01':
+          type: object
+          properties:
+            location:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlyLocation'
+            industries:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlySubIndustry'
+            stages:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuarterlySubStage'
+            business_models:
+              items:
+                $ref: '#/components/schemas/QuarterlySubBusinessModel'
+    QuarterlyLocation:
+      properties:
+        name:
+          type: string
+          example: minneapolis
+        count:
+          type: string
+          example: 1
   securitySchemes:
     APIKeyHeaderParam:
       type: apiKey
