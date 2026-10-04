@@ -249,6 +249,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/mattermark-capability-edges.yml
+  name: Mattermark Business Capability Map
 - type: AgenticAccess
   url: agentic-access/mattermark-agentic-access.yml
 - type: Website

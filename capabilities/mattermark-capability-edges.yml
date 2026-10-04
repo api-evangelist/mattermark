@@ -1,0 +1,26 @@
+slug: mattermark
+provider: Mattermark
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Companies
+  spec_file: mattermark-companies-api-openapi.yml
+  capability_id: BC-400.30
+  capability_id_l1: BC-400
+  capability_name: Market Intelligence Management
+  confidence: 0.8
+  evidence: Mattermark is a business-intelligence platform for data-driven deal making, providing profiles
+    on roughly four million companies ... GET /companies/{id}/stories Retrieve company news articles
+  reason: Company profiles, funding events, news stories, similar companies and employee counts constitute
+    market/competitive intelligence data; alternative reading as corporate development research exists,
+    hence 0.8.
