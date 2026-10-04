@@ -403,22 +403,200 @@ paths:
                 $ref: '#/components/schemas/PeopleItem'
 components:
   schemas:
-    PeopleItem:
+    SimilarCompany:
       type: object
       required:
-      - name
-      - title
-      - path
+      - company_name
+      - description
+      - description_plain_text
+      - domain
+      - id
+      - probability
+      - stage
+      - total_funding
       properties:
-        name:
+        company_name:
           type: string
-          example: Ari Roisman
+          example: Flipkart
+        description:
+          type: string
+          example: Flipkart is an online shopping destination for electronics, books, music and movies.
+        description_plain_text:
+          type: string
+          example: Flipkart is an online shopping destination for electronics, books, music and movies.
+        domain:
+          type: string
+          example: flipkart.com
+        id:
+          type: integer
+          format: int64
+          example: 39279
+        probability:
+          type: string
+          example: 1.0
+        stage:
+          type: string
+          example: h
+        total_funding:
+          type: integer
+          format: int64
+          example: 3051140000
+    Acquired_By:
+      type: object
+      required:
+      - event_id
+      - closed_date
+      - company_id
+      - company_name
+      - company_domain
+      properties:
+        event_id:
+          type: integer
+          format: int64
+          example: 15
+        closed_date:
+          type: string
+          example: '2012-12-20'
+        company_id:
+          type: integer
+          format: int64
+          example: 1255
+        company_name:
+          type: string
+          example: Oracle Corporation
+        company_domain:
+          type: string
+          format: url
+          example: oracle.com
+    GooglePlayApps:
+      type: object
+      required:
+      - id
+      - app_name
+      - package_id
+      - company_id
+      - company_name
+      - company_domain
+      - play_url
+      properties:
+        id:
+          type: integer
+          example: 319510
+        app_name:
+          type: string
+          format: Glide - Video Chat Messenger
+        package_id:
+          type: string
+          example: com.glidetalk.glideapp
+        company_id:
+          type: integer
+          format: int64
+          example: 113022
+        company_name:
+          type: string
+          example: Glide
+        company_domain:
+          type: string
+          example: glide.me
+        play_url:
+          type: string
+          format: url
+          example: http://play.google.com/store/apps/details?id=com.glidetalk.glideapp
+    AlexaRank:
+      type: object
+      properties:
+        recorded_at:
+          type: string
+          example: 2014-08-09 00:00:00 UTC
+        score:
+          type: string
+          example: 126653
+    companies:
+      type: object
+      required:
+      - id
+      - company_name
+      - url
+      - domain
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 10808576
+        company_name:
+          type: string
+          example: Blue Smoke LLC
+        domain:
+          type: string
+          example: bluesmokellc.net
+        url:
+          type: string
+          example: https://api.mattermark.com/companies/10808576
+    Funding:
+      type: object
+      required:
+      - amount
+      - currency
+      - series
+      - funding_date
+      - news_url
+      - source
+      - investor_ids
+      - investors
+      properties:
+        amount:
+          type: integer
+          example: 0
+        currency:
+          type: string
+          example: USD
+        series:
+          type: string
+          example: speed
+        funding_date:
+          type: string
+          format: date
+          example: '2013-03-21'
+        news_url:
+          type: string
+          format: url
+          example: http:\/\/www.finsmes.com\/2013\/03\/glide­raises­seven­figure­sum.html
+        source:
+          type: string
+          example: derived
+        investor_ids:
+          type: array
+          items:
+            type: string
+          example:
+          - 1234
+        investors:
+          type: string
+          example: Orey Gilliam,Philippe Schwartz
+    Stories:
+      type: object
+      properties:
         title:
           type: string
-          example: Co-Founder / CEO
-        path:
+          example: Israeli Glide introduces fast capture video and chat for Apple Watch
+        url:
           type: string
-          example: https://il.linkedin.com/in/aroisman
+          example: http://www.geektime.com/2016/11/13/israeli-glide-introduces-fast-capture-video-and-chat-for-apple-watch/
+        date:
+          type: string
+          example: Nov 13 2016
+        source:
+          type: string
+          example: Geek Time
+    FacebookTalkingCount:
+      type: object
+      properties:
+        recorded_at:
+          type: string
+          example: 2014-08-09 00:00:00 UTC
+        score:
+          type: string
+          example: 3894
     GrowthSource:
       type: object
       properties:
@@ -428,6 +606,24 @@ components:
         score:
           type: string
           example: 210
+    EstMonthlyUniques:
+      type: object
+      properties:
+        recorded_at:
+          type: string
+          example: 2015-10-17 04:31:27 +0000
+        score:
+          type: string
+          example: 21543
+    TwitterFollowerCount:
+      type: object
+      properties:
+        recorded_at:
+          type: string
+          example: 2014-08-09 00:00:00 UTC
+        score:
+          type: string
+          example: 10388
     CompanyItem:
       type: object
       required:
@@ -606,44 +802,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EstMonthlyUniques'
-    SimilarCompany:
-      type: object
-      required:
-      - company_name
-      - description
-      - description_plain_text
-      - domain
-      - id
-      - probability
-      - stage
-      - total_funding
-      properties:
-        company_name:
-          type: string
-          example: Flipkart
-        description:
-          type: string
-          example: Flipkart is an online shopping destination for electronics, books, music and movies.
-        description_plain_text:
-          type: string
-          example: Flipkart is an online shopping destination for electronics, books, music and movies.
-        domain:
-          type: string
-          example: flipkart.com
-        id:
-          type: integer
-          format: int64
-          example: 39279
-        probability:
-          type: string
-          example: 1.0
-        stage:
-          type: string
-          example: h
-        total_funding:
-          type: integer
-          format: int64
-          example: 3051140000
     ItunesUSAWeeklyDownloads:
       type: object
       properties:
@@ -653,7 +811,7 @@ components:
         score:
           type: string
           example: 49745
-    FacebookTalkingCount:
+    InboundLinks:
       type: object
       properties:
         recorded_at:
@@ -661,138 +819,7 @@ components:
           example: 2014-08-09 00:00:00 UTC
         score:
           type: string
-          example: 3894
-    companies:
-      type: object
-      required:
-      - id
-      - company_name
-      - url
-      - domain
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: 10808576
-        company_name:
-          type: string
-          example: Blue Smoke LLC
-        domain:
-          type: string
-          example: bluesmokellc.net
-        url:
-          type: string
-          example: https://api.mattermark.com/companies/10808576
-    EstMonthlyUniques:
-      type: object
-      properties:
-        recorded_at:
-          type: string
-          example: 2015-10-17 04:31:27 +0000
-        score:
-          type: string
-          example: 21543
-    GooglePlayApps:
-      type: object
-      required:
-      - id
-      - app_name
-      - package_id
-      - company_id
-      - company_name
-      - company_domain
-      - play_url
-      properties:
-        id:
-          type: integer
-          example: 319510
-        app_name:
-          type: string
-          format: Glide - Video Chat Messenger
-        package_id:
-          type: string
-          example: com.glidetalk.glideapp
-        company_id:
-          type: integer
-          format: int64
-          example: 113022
-        company_name:
-          type: string
-          example: Glide
-        company_domain:
-          type: string
-          example: glide.me
-        play_url:
-          type: string
-          format: url
-          example: http://play.google.com/store/apps/details?id=com.glidetalk.glideapp
-    ItunesApps:
-      type: object
-      properties:
-        developer_url:
-          type: string
-          format: url
-          example: http:\/\/www.glide.me\/
-        itunes_id:
-          type: integer
-          example: 588199307
-        itunes_url:
-          type: string
-          format: url
-          example: https:\/\/itunes.apple.com\/us\/app\/glide­video­texting\/id588199307?mt=8&uo=2
-        app_name:
-          type: string
-          example: Glide  Video Texting
-    LinkedinFollowerCount:
-      type: object
-      properties:
-        recorded_at:
-          type: string
-          example: 2014-08-09 00:00:00 UTC
-        score:
-          type: string
-          example: 46
-    Funding:
-      type: object
-      required:
-      - amount
-      - currency
-      - series
-      - funding_date
-      - news_url
-      - source
-      - investor_ids
-      - investors
-      properties:
-        amount:
-          type: integer
-          example: 0
-        currency:
-          type: string
-          example: USD
-        series:
-          type: string
-          example: speed
-        funding_date:
-          type: string
-          format: date
-          example: '2013-03-21'
-        news_url:
-          type: string
-          format: url
-          example: http:\/\/www.finsmes.com\/2013\/03\/glide­raises­seven­figure­sum.html
-        source:
-          type: string
-          example: derived
-        investor_ids:
-          type: array
-          items:
-            type: string
-          example:
-          - 1234
-        investors:
-          type: string
-          example: Orey Gilliam,Philippe Schwartz
+          example: 1025
     EmployeeCount:
       type: object
       properties:
@@ -802,6 +829,15 @@ components:
         score:
           type: string
           example: 16
+    FacebookLikeCount:
+      type: object
+      properties:
+        recorded_at:
+          type: string
+          example: 2014-08-09 00:00:00 UTC
+        score:
+          type: string
+          example: 168940
     Acquired_Companies:
       type: object
       required:
@@ -828,7 +864,24 @@ components:
         company_domain:
           type: string
           example: moat.com
-    FacebookLikeCount:
+    ItunesApps:
+      type: object
+      properties:
+        developer_url:
+          type: string
+          format: url
+          example: http:\/\/www.glide.me\/
+        itunes_id:
+          type: integer
+          example: 588199307
+        itunes_url:
+          type: string
+          format: url
+          example: https:\/\/itunes.apple.com\/us\/app\/glide­video­texting\/id588199307?mt=8&uo=2
+        app_name:
+          type: string
+          example: Glide  Video Texting
+    LinkedinFollowerCount:
       type: object
       properties:
         recorded_at:
@@ -836,7 +889,16 @@ components:
           example: 2014-08-09 00:00:00 UTC
         score:
           type: string
-          example: 168940
+          example: 46
+    MindshareScores:
+      type: object
+      properties:
+        recorded_at:
+          type: string
+          example: 2014-08-09 00:00:00 UTC
+        score:
+          type: string
+          example: 210
     CompanyStory:
       required:
       - id
@@ -861,93 +923,23 @@ components:
         source_title:
           type: string
           example: MediaNama
-    InboundLinks:
-      type: object
-      properties:
-        recorded_at:
-          type: string
-          example: 2014-08-09 00:00:00 UTC
-        score:
-          type: string
-          example: 1025
-    MindshareScores:
-      type: object
-      properties:
-        recorded_at:
-          type: string
-          example: 2014-08-09 00:00:00 UTC
-        score:
-          type: string
-          example: 210
-    Stories:
-      type: object
-      properties:
-        title:
-          type: string
-          example: Israeli Glide introduces fast capture video and chat for Apple Watch
-        url:
-          type: string
-          example: http://www.geektime.com/2016/11/13/israeli-glide-introduces-fast-capture-video-and-chat-for-apple-watch/
-        date:
-          type: string
-          example: Nov 13 2016
-        source:
-          type: string
-          example: Geek Time
-    AlexaRank:
-      type: object
-      properties:
-        recorded_at:
-          type: string
-          example: 2014-08-09 00:00:00 UTC
-        score:
-          type: string
-          example: 126653
-    TwitterFollowerCount:
-      type: object
-      properties:
-        recorded_at:
-          type: string
-          example: 2014-08-09 00:00:00 UTC
-        score:
-          type: string
-          example: 10388
-    Acquired_By:
+    PeopleItem:
       type: object
       required:
-      - event_id
-      - closed_date
-      - company_id
-      - company_name
-      - company_domain
+      - name
+      - title
+      - path
       properties:
-        event_id:
-          type: integer
-          format: int64
-          example: 15
-        closed_date:
+        name:
           type: string
-          example: '2012-12-20'
-        company_id:
-          type: integer
-          format: int64
-          example: 1255
-        company_name:
+          example: Ari Roisman
+        title:
           type: string
-          example: Oracle Corporation
-        company_domain:
+          example: Co-Founder / CEO
+        path:
           type: string
-          format: url
-          example: oracle.com
+          example: https://il.linkedin.com/in/aroisman
   parameters:
-    pageParam:
-      in: query
-      name: page
-      required: false
-      description: The page of items from the result set to return.
-      schema:
-        type: integer
-        minimum: 0
     limitParam:
       in: query
       name: per_page
@@ -958,6 +950,14 @@ components:
         default: 10
         maximum: 50
         minimum: 1
+    pageParam:
+      in: query
+      name: page
+      required: false
+      description: The page of items from the result set to return.
+      schema:
+        type: integer
+        minimum: 0
   securitySchemes:
     APIKeyHeaderParam:
       type: apiKey
