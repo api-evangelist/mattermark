@@ -1,0 +1,12 @@
+{
+ "url": "https://raw.githubusercontent.com/mattermark/mattermark-openapi/HEAD/mattermark-swagger.yaml",
+ "requested_url": "https://raw.githubusercontent.com/mattermark/mattermark-openapi/HEAD/mattermark-swagger.yaml",
+ "status": 200,
+ "content_type": "text/plain; charset=utf-8",
+ "bytes": 40437,
+ "sha256": "fe6a9d899868ffb6dfed5cfc0058f6d804a46298b7428c896244a34968f0fb06",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
