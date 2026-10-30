@@ -64,6 +64,130 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Mattermark is a company surfaced as a portfolio company of a16z, slow-ventures, version-one-ventures and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+Mattermark is a business-intelligence platform for data-driven deal making, providing profiles on roughly four million companies and twenty million key contacts along with their investors, funding events, and news. Relaunched as an independent company, Mattermark exposes its dataset through a REST API (api.mattermark.com) and a GraphQL API (eapi.mattermark.com), both authenticated with a Bearer API key and queryable with the Mattermark Search Filter Language (MSFL). Originally an a16z / Slow Ventures / Version One Ventures-backed startup, it is tracked in the API Evangelist network as a company profile.
 
-Backed by: a16z, slow-ventures, version-one-ventures — https://mattermark.com
+**Areas:** Company · Business Intelligence · Company Data · Investor · Funding · Sales Intelligence · Market Research
+
+## Mattermark on APIs.io
+
+Everything profiled for Mattermark is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/mattermark/](https://apis.io/providers/mattermark/)** — or go straight to one of the APIs or properties below.
+
+### APIs (7)
+
+- [Mattermark GraphQL API](https://apis.io/apis/mattermark/mattermark-graphql-api/) — GraphQL access to the Mattermark dataset using the Mattermark Search Filter Language (MSFL) for complex company and investor queries. Read-only: the…
+- [Mattermark Companies API](https://apis.io/apis/mattermark/mattermark-companies-api/) — The Companies API from Mattermark — 5 operation(s) for companies.
+- [Mattermark Complex Queries API](https://apis.io/apis/mattermark/mattermark-complex-queries-api/) — The Complex Queries API from Mattermark — 1 operation(s) for complex queries.
+- [Mattermark Funding Events API](https://apis.io/apis/mattermark/mattermark-funding-events-api/) — The Funding Events API from Mattermark — 1 operation(s) for funding events.
+- [Mattermark Investors API](https://apis.io/apis/mattermark/mattermark-investors-api/) — The Investors API from Mattermark — 2 operation(s) for investors.
+- [Mattermark Search API](https://apis.io/apis/mattermark/mattermark-search-api/) — The Search API from Mattermark — 1 operation(s) for search.
+- [Mattermark Utilities API](https://apis.io/apis/mattermark/mattermark-utilities-api/) — The Utilities API from Mattermark — 1 operation(s) for utilities.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [mattermark](https://apis.io/servers/mattermark/mattermark/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Mattermark Agentic Access](https://apis.io/agentic-access/mattermark/mattermark-agentic-access/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Mattermark Rest Api Overlay](https://apis.io/overlays/mattermark/mattermark-rest-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Mattermark Authentication](https://apis.io/security/mattermark/mattermark-authentication/)
+- [Mattermark Domain Security](https://apis.io/security/mattermark/mattermark-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Mattermark Plans Pricing](https://apis.io/plans/mattermark/mattermark-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Mattermark Rate Limits](https://apis.io/rate-limits/mattermark/mattermark-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://mattermark.com)
+- [Documentation](https://developer.mattermark.com/docs)
+- [Getting started](https://developer.mattermark.com/docs)
+- [API reference](https://developer.mattermark.com/reference)
+- [Pricing](https://mattermark.com/pricing)
+- [Blog](https://mattermark.com/blog)
+- [Terms of service](https://mattermark.com/terms)
+- [Privacy policy](https://mattermark.com/privacy-policy/)
+- [GitHub](https://github.com/mattermark)
+
+## API Evangelist rating
+
+**Kin Score 47.1** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 52.4 |
+| Contract governance | 4.5 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 51.8 |
+| Access clarity | 63.2 |
+
+**Agent readiness 30.8** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 24.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/mattermark/](https://apis.io/providers/mattermark/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Mattermark: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/mattermark/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
